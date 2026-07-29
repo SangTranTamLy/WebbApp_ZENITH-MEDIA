@@ -1,0 +1,215 @@
+@keyframes heroFrameReveal {
+  from {
+    opacity: 0;
+    clip-path: inset(0 50%);
+  }
+
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+  }
+}
+
+@keyframes heroSoftReveal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes heroBeamFloat {
+  from {
+    transform: rotate(26deg) translateX(-2%);
+  }
+
+  to {
+    transform: rotate(31deg) translate(4%, 2%);
+  }
+}
+
+@keyframes heroRiseReveal {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes headlineReveal {
+  from {
+    opacity: 0;
+    clip-path: inset(100% 0 0);
+    transform: translateY(105%) skewY(4deg);
+  }
+
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+    transform: none;
+  }
+}
+
+@keyframes heroTextShimmer {
+  0%,
+  18%,
+  100% {
+    background-position: 100%;
+  }
+
+  48%,
+  66% {
+    background-position: 0%;
+  }
+}
+
+@keyframes chromaticEcho {
+  0% {
+    opacity: 0;
+    transform: none;
+  }
+
+  35% {
+    opacity: 0.65;
+    transform: translate(3px, -1px);
+    -webkit-text-stroke-color: #8b5cf6;
+  }
+
+  65% {
+    opacity: 0.45;
+    transform: translate(-3px, 1px);
+    -webkit-text-stroke-color: #48d7ff;
+  }
+
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}
+
+@keyframes heroCardReveal {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes heroProfileLine {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scaleX(0.3);
+    transform-origin: left;
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+@keyframes heroLabelScan {
+  0%,
+  100% {
+    width: 28px;
+    opacity: 0.7;
+    transform: translateX(0);
+  }
+
+  50% {
+    width: 48px;
+    opacity: 1;
+    transform: translateX(18px);
+  }
+}
+
+@keyframes headerReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes brandMarkGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 transparent);
+  }
+
+  50% {
+    filter: drop-shadow(
+      0 0 7px rgba(72, 215, 255, 0.53)
+    );
+  }
+}
+
+@keyframes systemStatusPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes orbitSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes profileFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes statusPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes textShimmer {
+  0%,
+  18%,
+  100% {
+    background-position: 100%;
+  }
+
+  55%,
+  75% {
+    background-position: 0%;
+  }
+}

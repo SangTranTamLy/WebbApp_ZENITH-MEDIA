@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/api/health", (_request: Request, response: Response) => {
   response.status(200).json({
     success: true,
-    message: "Zenith API đang hoạt động",
+    message: "Zenith API is running",
     data: {
       environment: process.env.NODE_ENV || "development",
       timestamp: new Date().toISOString(),

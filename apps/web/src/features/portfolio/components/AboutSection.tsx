@@ -14,15 +14,15 @@ const repositories = [
     label: "FEATURED / FULL-STACK",
     title: "QUICKSERVE POS",
     description:
-      "A point-of-sale platform for products, orders, invoices, inventory, shifts, promotions and revenue reporting.",
-    stack: "React · TypeScript · Node · Express",
+      "A point-of-sale platform for managing products, orders, invoices, inventory, shifts, promotions and revenue reports.",
+    stack: "React · TypeScript · Node.js · Express",
     href: "https://github.com/SangTranTamLy/pos-system-online",
   },
   {
     label: "LEARNING PRODUCT",
     title: "STUDY ELS",
     description:
-      "An English-learning interface with flashcards, dictionary, translation, quizzes and AI-assisted practice.",
+      "An English-learning interface featuring flashcards, dictionary tools, translation, quizzes and AI-assisted practice.",
     stack: "Frontend · Product Design",
     href: "https://github.com/SangTranTamLy/Study-ELS",
   },
@@ -30,7 +30,7 @@ const repositories = [
     label: "PERSONAL PROJECT",
     title: "STUDY DEV",
     description:
-      "A personal development portfolio documenting technical skills, experiments and the journey toward full-stack engineering.",
+      "A personal development portfolio documenting technical skills, experiments and my journey toward full-stack engineering.",
     stack: "Portfolio · Web Design",
     href: "https://github.com/SangTranTamLy/Study-DEV",
   },
@@ -45,14 +45,17 @@ export function AboutSection() {
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8 }}
+          transition={{
+            duration: 0.8,
+            ease: [0.2, 0.8, 0.2, 1],
+          }}
         >
           <div className="profile-orbit">
-            <span />
+            <span aria-hidden="true" />
 
             <img
               src="https://avatars.githubusercontent.com/u/182103420?v=4"
-              alt="T.Sang — SangTranTamLy on GitHub"
+              alt="T.Sang — frontend developer and visual editor"
             />
           </div>
         </motion.div>
@@ -62,7 +65,11 @@ export function AboutSection() {
           initial={{ opacity: 0, y: 35 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
+          transition={{
+            duration: 0.8,
+            delay: 0.1,
+            ease: [0.2, 0.8, 0.2, 1],
+          }}
         >
           <p className="section-label">01 / ABOUT MYSELF</p>
 
@@ -74,18 +81,19 @@ export function AboutSection() {
 
           <p>
             I’m a final-year Information Technology student based in Ho Chi
-            Minh City, focused on building responsive web experiences with
-            React and TypeScript while developing toward full-stack
-            engineering.
+            Minh City. I focus on building responsive and accessible web
+            experiences with React and TypeScript while developing my
+            full-stack engineering skills.
           </p>
 
           <p>
-            My work connects practical product development with cinematic
-            visual storytelling. Zenith is where these strengths become one
-            complete client experience.
+            My work combines practical product development, technical writing
+            and visual storytelling. This portfolio is where I document
+            projects, publish technical articles and share reusable code
+            snippets.
           </p>
 
-          <div className="skill-cloud">
+          <div className="skill-cloud" aria-label="Technologies and skills">
             {technologies.map((technology) => (
               <span key={technology}>{technology}</span>
             ))}
@@ -98,14 +106,17 @@ export function AboutSection() {
               target="_blank"
               rel="noreferrer"
             >
-              View GitHub profile ↗
+              View GitHub profile
+              <span aria-hidden="true">↗</span>
             </a>
 
             <a
-              className="profile-mail"
-              href="mailto:sangchaubr089@gmail.com"
+              className="email-link about-email"
+              href="mailto:sangchaubr089@gmail.com?subject=Portfolio%20Contact"
+              aria-label="Send an email to T.Sang"
             >
-              sangchaubr089@gmail.com
+              <span>sangchaubr089@gmail.com</span>
+              <i aria-hidden="true">↗</i>
             </a>
           </div>
         </motion.div>
@@ -117,11 +128,18 @@ export function AboutSection() {
         initial={{ opacity: 0, y: 45 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.8 }}
+        transition={{
+          duration: 0.8,
+          ease: [0.2, 0.8, 0.2, 1],
+        }}
       >
         <div className="github-heading">
           <span>FEATURED DEVELOPMENT PROJECTS</span>
-          <p>Public repositories and learning projects on GitHub.</p>
+
+          <p>
+            Public repositories and selected learning projects available on
+            GitHub.
+          </p>
         </div>
 
         <div className="repo-grid">
@@ -131,9 +149,12 @@ export function AboutSection() {
               key={repository.title}
               target="_blank"
               rel="noreferrer"
+              aria-label={`View ${repository.title} on GitHub`}
             >
               <small>{repository.label}</small>
+
               <h3>{repository.title}</h3>
+
               <p>{repository.description}</p>
 
               <span>

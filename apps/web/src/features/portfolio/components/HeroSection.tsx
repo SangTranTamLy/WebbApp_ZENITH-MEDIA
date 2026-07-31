@@ -1,51 +1,47 @@
 export function HeroSection() {
   return (
-    <section className="hero personal-hero">
+    <section id="home" className="hero personal-hero">
       <div className="hero-art" aria-hidden="true">
-        <b>PORTFOLIO / 2026</b>
-        <span>HO CHI MINH CITY • VIETNAM</span>
+        <b>HỒ SƠ NĂNG LỰC / 2026</b>
+
+        <span>
+          THÀNH PHỐ HỒ CHÍ MINH • VIỆT NAM
+        </span>
+
         <div className="hero-beam" />
       </div>
 
       <div className="hero-copy">
         <p className="hero-kicker">
-          — T.SANG / FRONTEND DEVELOPER & VISUAL EDITOR
+          — T.SANG / FULL-STACK DEVELOPER & CREATIVE CODER
         </p>
 
-        <h1 className="kinetic-title">
-          <span className="headline-line">
-            I BUILD DIGITAL
+        <h1 className="hero-title">
+          <span className="hero-title-line">
+            TÔI XÂY DỰNG
           </span>
 
-          <span className="headline-line headline-line--delayed">
-            EXPERIENCES
+          <span className="hero-title-line hero-title-line--delayed">
+            SẢN PHẨM SỐ
+
             <em
-              className="shimmer-text"
-              data-text="THAT MOVE."
+              className="hero-shimmer"
+              data-text="ĐẦY CHUYỂN ĐỘNG."
             >
-              THAT MOVE.
+              CÓ CHIỀU SÂU.
             </em>
           </span>
         </h1>
 
         <p className="hero-description">
-          I combine React and TypeScript product development with cinematic
-          editing and motion design—turning complex workflows into interfaces
-          that feel clear, fast and memorable.
+          Tôi xây dựng các sản phẩm web bằng React, TypeScript và Express, đồng thời
+          chia sẻ quy trình thiết kế, kiến trúc và những đoạn code có thể tái sử dụng.
         </p>
 
         <div className="hero-actions">
           <a className="hero-primary" href="#development">
-            Explore my work ↓
-          </a>
-
-          <a
-            className="hero-github"
-            href="https://github.com/SangTranTamLy"
-            target="_blank"
-            rel="noreferrer"
-          >
-            GitHub / SangTranTamLy ↗
+            Xem dự án
+            <span aria-hidden="true">↓</span>
           </a>
         </div>
       </div>
@@ -53,16 +49,16 @@ export function HeroSection() {
       <div className="hero-profile-card">
         <img
           src="https://avatars.githubusercontent.com/u/182103420?v=4"
-          alt="T.Sang"
+          alt="Ảnh đại diện của T.Sang"
         />
 
         <div>
-          <small>PROFILE 001</small>
+          <small>HỒ SƠ 001</small>
           <b>T.SANG</b>
-          <span>Developer × Visual Editor</span>
+          <span>Full-stack Developer</span>
         </div>
 
-        <i>AVAILABLE</i>
+        <i>SẴN SÀNG</i>
       </div>
     </section>
   );

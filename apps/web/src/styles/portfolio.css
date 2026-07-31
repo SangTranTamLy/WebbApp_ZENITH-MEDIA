@@ -666,38 +666,56 @@
 }
 
 /* Main heading */
-
 .hero-title {
+  width: 100%;
   max-width: 1100px;
-  margin: 28px 0;
+  margin: 30px 0 28px;
+  overflow: visible;
 
   color: #f5f7fa;
-  font-size: clamp(58px, 7.3vw, 112px);
+  font-family: Inter, Arial, sans-serif;
+  font-size: clamp(54px, 7.1vw, 108px);
   font-weight: 500;
-  line-height: 0.83;
-  letter-spacing: -0.07em;
+  line-height: 0.95;
+  letter-spacing: -0.06em;
   text-transform: uppercase;
+
+  font-kerning: normal;
 }
 
 .hero-title-line {
-  display: block;
+  position: relative;
 
-  width: max-content;
+  display: block;
+  width: fit-content;
   max-width: 100%;
+  padding: 0.09em 0.06em 0.07em 0;
+  overflow: visible;
 
   transform-origin: left bottom;
 
-  animation: heroHeadlineReveal 1.05s cubic-bezier(0.16, 0.82, 0.2, 1) 360ms
+  animation:
+    heroHeadlineReveal
+    1.05s
+    cubic-bezier(0.16, 0.82, 0.2, 1)
+    360ms
     both;
+}
+
+.hero-title-line + .hero-title-line {
+  margin-top: -0.08em;
 }
 
 .hero-title-line--delayed {
   animation-delay: 520ms;
 }
 
+/* Không dùng display: block vì sẽ đẩy SÂU. xuống dòng */
+
+.hero-title-line em,
 .hero-title-line--delayed em {
-  display: block;
-  width: max-content;
+  display: inline-block;
+  width: auto;
   max-width: 100%;
 }
 
@@ -942,10 +960,10 @@
 /* Tablet */
 
 @media (max-width: 850px) {
-  .hero-title {
-    font-size: 60px;
+    .hero-title {
+    font-size: clamp(52px, 9vw, 76px);
+    line-height: 0.97;
   }
-
   .hero-profile-card {
     right: 5vw;
   }
@@ -954,6 +972,27 @@
 /* Mobile */
 
 @media (max-width: 650px) {
+    .hero-title {
+    margin: 28px 0 24px;
+
+    font-size: clamp(40px, 12.5vw, 56px);
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+
+  .hero-title-line {
+    width: auto;
+    padding-top: 0.1em;
+  }
+
+  .hero-title-line + .hero-title-line {
+    margin-top: -0.03em;
+  }
+
+  .hero-title-line em,
+  .hero-title-line--delayed em {
+    width: auto;
+  }
   .hero {
     align-items: flex-start;
 
@@ -964,21 +1003,6 @@
   .hero::before,
   .hero-art {
     inset: 92px 14px 20px;
-  }
-
-  .hero-title {
-    margin-top: 30px;
-
-    font-size: 44px;
-    line-height: 0.88;
-  }
-
-  .hero-title-line {
-    width: auto;
-  }
-
-  .hero-title-line--delayed em {
-    width: auto;
   }
 
   .hero-kicker {

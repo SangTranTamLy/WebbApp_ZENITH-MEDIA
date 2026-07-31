@@ -1,112 +1,243 @@
 # Zenith Media Workspace
 
-![Zenith Status](https://img.shields.io/badge/Status-MVP%20Development-cyan?style=for-the-badge)
-![Monorepo](https://img.shields.io/badge/Architecture-Monorepo%20(pnpm)-8b5cf6?style=for-the-badge)
-![Tech Stack](https://img.shields.io/badge/Stack-React%20%7C%20Node.js%20%7C%20PostgreSQL-48d7ff?style=for-the-badge)
+Personal portfolio, technical blog, and reusable code snippets library built by [T.Sang](https://github.com/SangTranTamLy).
 
-**Zenith Media Workspace** không chỉ là một Portfolio cá nhân giới thiệu dịch vụ, mà là một **Hệ thống quản lý vòng đời dự án Media (Media Project Lifecycle Management) toàn diện**. Hệ thống bao gồm quy trình từ lúc khách hàng gửi yêu cầu (Commission), báo giá, duyệt video với bình luận theo thời gian (Timestamped Review), đến thanh toán tự động và bàn giao file gốc an toàn.
+Zenith combines product development, technical writing, and visual storytelling in one web experience. The project is designed to showcase real development work, document engineering decisions, and share practical React, TypeScript, Express, and CSS solutions.
 
----
+> Planned domain: [zenith.io.vn](https://zenith.io.vn)
 
-## ✨ Tính năng cốt lõi (MVP Features)
+## Overview
 
-### 1. Portfolio & Commission Form
-- Trưng bày các dự án nổi bật, tương tác mượt mà nhờ Framer Motion và kiến trúc CSS hiện đại.
-- Form yêu cầu (Commission) thu thập thông tin khách hàng, budget, deadline với validation chặt chẽ qua Zod.
+Zenith currently focuses on three areas:
 
-### 2. Client Workspace & Quản lý Media
-- Không gian làm việc bảo mật: Khách hàng chỉ truy cập được các dự án mà họ là thành viên (Row-Level Security).
-- Hỗ trợ tải lên file dung lượng lớn trực tiếp từ Client lên S3 (Multipart/Resumable Upload) mà không làm quá tải API backend.
-- Luồng duyệt file an toàn: Quarantine (Cách ly file) -> Scanning -> Processing -> Ready.
+- **Developer portfolio** — personal introduction, technical capabilities, and featured GitHub projects.
+- **Technical blog** — development notes, architecture decisions, lessons learned, and project case studies.
+- **Code snippets** — reusable hooks, API helpers, middleware, and animated UI components with syntax highlighting and one-click copy.
 
-### 3. Hệ thống Video Review
-- Trình phát video nội bộ cho phép khách hàng để lại bình luận (Review Comment) gắn trực tiếp vào từng mốc thời gian (Timestamp) hoặc frame.
-- Quản lý các phiên bản nháp (Version Control), giữ lại lịch sử phản hồi và hỗ trợ phê duyệt (Approve/Reject).
+## Features
 
-### 4. Thanh toán & Bàn giao File (Payment & Delivery)
-- Tích hợp cổng thanh toán với luồng Webhook bảo mật (xử lý Idempotency và Replay Attack).
-- Kích hoạt phân quyền tải File gốc (Final Master) chỉ khi khách hàng thanh toán thành công thông qua Signed URL có thời hạn.
+### Portfolio
 
-### 5. Automation & Background Jobs
-- Sử dụng BullMQ + Redis để xử lý các tác vụ nền: Transcode video bằng FFmpeg, tạo Thumbnail, Waveform, và đóng dấu Watermark động.
-- Thông báo theo thời gian thực tới Discord và Email cho các sự kiện như có comment mới, thay đổi trạng thái dự án, hoặc thanh toán thành công.
+- Responsive cinematic landing page
+- Animated Hero and About sections
+- GitHub profile and selected repositories
+- Technical skills and service overview
+- Accessible contact links
+- Reduced-motion support
 
----
+### Technical Blog
 
-## 🏗 Kiến trúc hệ thống (Architecture)
+- Blog listing and article detail routes
+- Category, publication date, reading time, and tags
+- Structured technical content and code examples
+- VS Code-inspired syntax highlighting
+- Copy-to-clipboard code blocks
 
-Dự án được xây dựng theo kiến trúc **Modular Monolith** kết hợp **Background Workers**, lưu trữ chung trong một pnpm workspace:
+### Code Snippets
 
-- **Frontend (`apps/web`)**: Xây dựng với React 19, TypeScript, Vite. Quản lý state bằng Zustand và TanStack Query. Thiết kế UI/UX theo xu hướng Glassmorphism, Micro-animations (60fps).
-- **Backend API (`apps/api`)**: Node.js, Express (hoặc NestJS), TypeScript. Xử lý nghiệp vụ, API, Authentication, và kết nối Database.
-- **Worker (`apps/worker`)**: Process độc lập làm nhiệm vụ nặng như FFmpeg transcoding, gửi email để không block luồng API chính.
-- **Database & Cache**: PostgreSQL (quản lý trạng thái, quyền) và Redis (quản lý Job Queue, Rate Limiting).
-- **Storage & CDN**: AWS S3 + CloudFront cho lưu trữ và phân phối video tốc độ cao.
+- Reusable TypeScript, Express, React, and CSS examples
+- Compact code previews
+- Dedicated snippet detail pages
+- Syntax highlighting and line numbers
+- Copy status and clipboard error handling
 
----
+## Tech Stack
 
-## 🛠 Hướng dẫn Cài đặt (Development Setup)
+| Area | Technologies |
+| --- | --- |
+| Frontend | React, TypeScript, Vite |
+| Routing | React Router |
+| Server state | TanStack Query |
+| Forms and validation | React Hook Form, Zod |
+| Animation | Framer Motion, CSS animations |
+| Code highlighting | React Syntax Highlighter |
+| Backend | Node.js, TypeScript, Express |
+| API security | Helmet, CORS |
+| Package management | pnpm workspaces |
 
-### 1. Yêu cầu hệ thống
-- **Node.js**: `v18.x` trở lên
-- **pnpm**: `v9.x` trở lên
-- **PostgreSQL** & **Redis** đang chạy nội bộ hoặc qua Docker.
-- **Tài khoản AWS** (S3/CloudFront) hoặc MinIO để test Storage nội bộ.
+## Repository Structure
 
-### 2. Cài đặt thư viện
+```text
+zenith-workspace/
+├── apps/
+│   ├── api/                     # Express API
+│   │   ├── src/
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   │
+│   └── web/                     # React application
+│       ├── public/
+│       ├── src/
+│       │   ├── app/             # App, providers, and router
+│       │   ├── assets/          # Images and static assets
+│       │   ├── components/      # Shared layout and UI components
+│       │   ├── content/         # Blog posts and snippets
+│       │   ├── features/        # Feature-specific components
+│       │   ├── pages/           # Route pages
+│       │   ├── services/        # HTTP and API services
+│       │   └── styles/          # Variables, global CSS, portfolio CSS, animations
+│       └── package.json
+│
+├── packages/                    # Future shared packages
+├── package.json
+├── pnpm-lock.yaml
+└── pnpm-workspace.yaml
+```
+
+## Getting Started
+
+### Requirements
+
+- Node.js
+- pnpm
+- Git
+
+### 1. Clone the repository
+
 ```bash
 git clone https://github.com/SangTranTamLy/zenith-workspace.git
 cd zenith-workspace
+```
 
-# Cài đặt tất cả dependencies
+If your repository uses a different name, replace the URL and folder name above.
+
+### 2. Install dependencies
+
+Run this command from the monorepo root:
+
+```bash
 pnpm install
 ```
 
-### 3. Cấu hình biến môi trường
-Tạo file `.env` trong thư mục `apps/api` (hoặc root) với các biến quan trọng:
+### 3. Configure the API
+
+Create `apps/api/.env`:
+
 ```env
-# Database & Redis
-DATABASE_URL=postgresql://user:password@localhost:5432/zenith
-REDIS_URL=redis://localhost:6379
-
-# Storage Setup
-AWS_REGION=ap-southeast-1
-AWS_ACCESS_KEY_ID=your_access_key
-AWS_SECRET_ACCESS_KEY=your_secret_key
-AWS_BUCKET_NAME=zenith-media-assets
-
-# Authentication & Webhooks
-JWT_SECRET=super_secret_key
-PAYMENT_WEBHOOK_SECRET=whsec_xxx
-DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/xxx
+NODE_ENV=development
+PORT=4000
+CORS_ORIGIN=http://localhost:5173
 ```
 
-### 4. Khởi chạy dự án
+Do not commit `.env` files or production secrets.
+
+### 4. Start the backend
+
+From the monorepo root:
+
 ```bash
-# Áp dụng Database Migrations (Prisma/TypeORM)
-pnpm --filter @zenith/api run db:migrate
-
-# Chạy song song toàn bộ các dịch vụ (Web, API, Worker)
-pnpm dev
-# Hoặc chạy riêng biệt:
-# pnpm --filter @zenith/web dev (http://localhost:5173)
-# pnpm --filter @zenith/api dev (http://localhost:4000)
+pnpm --filter @zenith/api dev
 ```
+
+Health endpoint:
+
+```text
+http://localhost:4000/api/health
+```
+
+### 5. Start the frontend
+
+Open another terminal at the monorepo root:
+
+```bash
+pnpm --filter @zenith/web dev
+```
+
+Frontend:
+
+```text
+http://localhost:5173
+```
+
+## Available Routes
+
+| Route | Purpose |
+| --- | --- |
+| `/` | Portfolio homepage |
+| `/blog` | Technical blog |
+| `/blog/:slug` | Blog article detail |
+| `/snippets` | Code snippets library |
+| `/snippets/:slug` | Snippet detail |
+
+## Development Commands
+
+Run commands from the monorepo root:
+
+```bash
+# Start the web application
+pnpm --filter @zenith/web dev
+
+# Start the API
+pnpm --filter @zenith/api dev
+
+# Type-check the frontend
+pnpm --filter @zenith/web exec tsc -b
+
+# Build the frontend
+pnpm --filter @zenith/web build
+```
+
+## Styling Rules
+
+Frontend styles are separated by responsibility:
+
+```text
+apps/web/src/styles/
+├── variables.css      # Design tokens and CSS variables
+├── animations.css     # CSS @keyframes only
+├── portfolio.css      # Portfolio, blog, and snippets UI
+└── globals.css        # Imports, reset, and global styles
+```
+
+Import order in `globals.css`:
+
+```css
+@import "./variables.css";
+@import "./animations.css";
+@import "./portfolio.css";
+```
+
+Framer Motion configuration remains inside React components. CSS `@keyframes` belong in `animations.css`.
+
+## Security Principles
+
+The project follows these baseline rules:
+
+- Secrets are stored in environment variables.
+- API input is validated before business logic runs.
+- Helmet and explicit CORS rules protect the Express API.
+- User-generated content must be sanitized before rendering.
+- Rate limiting will protect public write endpoints.
+- Authentication and permissions must be enforced by the backend.
+- Production logging must not expose credentials or private user data.
+
+## Roadmap
+
+- [ ] Markdown/MDX article authoring
+- [ ] PostgreSQL persistence for posts, views, and reactions
+- [ ] Blog search and category filters
+- [ ] Snippet language filters
+- [ ] Reaction and view counters
+- [ ] OpenAPI documentation for the Express API
+- [ ] Rate limiting and request auditing
+- [ ] Automated testing
+- [ ] GitHub Actions CI/CD
+- [ ] Production deployment for `zenith.io.vn`
+- [ ] Error tracking and observability
+
+## Featured Projects
+
+- [QuickServe POS](https://github.com/SangTranTamLy/pos-system-online)
+- [Study ELS](https://github.com/SangTranTamLy/Study-ELS)
+- [Study DEV](https://github.com/SangTranTamLy/Study-DEV)
+
+## Author
+
+**T.Sang — SangTranTamLy**
+
+- GitHub: [github.com/SangTranTamLy](https://github.com/SangTranTamLy)
+- Email: [sangchaubr089@gmail.com](mailto:sangchaubr089@gmail.com)
 
 ---
 
-## 🔐 Bảo mật & Hiệu năng
-- **Bảo mật**: 
-  - 100% Signed URLs (không public file trực tiếp).
-  - Validation dữ liệu toàn diện (Zod), RLS (Row-Level Security) cho Database.
-  - Phân tách môi trường rõ ràng, không lưu API keys hay Secret trên Client.
-- **Hiệu năng**: 
-  - Mục tiêu API Metadata P95 dưới `300ms`.
-  - Frontend áp dụng CDN caching, Lazy-loading, và Virtualization cho danh sách media lớn.
-
-## 🚀 Triển khai (CI/CD Deployment)
-Hệ thống có thể được chia tách khi triển khai:
-- **Frontend Portfolio/Workspace**: Vercel hoặc Cloudflare Pages.
-- **API Server & Background Worker**: Nền tảng Container-based như Render, AWS ECS, hoặc Railway.
-- **Data**: Managed PostgreSQL & Managed Redis.
-- **Pipeline**: Tích hợp GitHub Actions (Lint, Typecheck, Unit Test, Smoke Test) chạy bắt buộc trước mọi bản cập nhật Production.
+Built with React, TypeScript, Express, and a focus on clear engineering and thoughtful interaction.

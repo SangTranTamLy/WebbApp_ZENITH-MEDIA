@@ -89,8 +89,7 @@ export function AboutSection() {
           <p>
             My work combines practical product development, technical writing
             and visual storytelling. This portfolio is where I document
-            projects, publish technical articles and share reusable code
-            snippets.
+            projects and share reusable code snippets.
           </p>
 
           <div className="skill-cloud" aria-label="Technologies and skills">

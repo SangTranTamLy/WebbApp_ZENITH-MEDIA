@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 
 const workflowSteps = [
   "Khám phá",
@@ -99,10 +98,10 @@ export function PlatformSection() {
             <span aria-hidden="true">↗</span>
           </a>
 
-          <Link className="platform-secondary" to="/login">
+          <a className="platform-secondary" href="#contact">
             Khám phá không gian khách hàng
             <span aria-hidden="true">→</span>
-          </Link>
+          </a>
         </div>
       </motion.div>
 

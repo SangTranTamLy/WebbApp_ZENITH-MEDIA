@@ -1,12 +1,14 @@
-@import "./variables.css";
 @import "./animations.css";
+@import "./variables.css";
 @import "./portfolio.css";
 
+@import "./auth/auth-layout.css";
+@import "./auth/auth-components.css";
+@import "./auth/login.css";
 :root {
-  font-family: Inter, Arial, sans-serif;
+  font-family: "Inter", Arial, sans-serif;
   color: #f5f7fa;
   background: #080a0f;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -35,6 +37,19 @@ body {
 }
 
 button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 4px;
+}
+
+button,
 input,
 textarea,
 select {
@@ -57,6 +72,45 @@ video {
 }
 
 .not-found-page {
+  display: grid;
+  place-content: center;
   min-height: 100vh;
   padding: 100px 7vw;
+  text-align: center;
+}
+
+.not-found-page p {
+  margin: 0;
+  color: var(--color-cyan);
+  font-family: monospace;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+}
+
+.not-found-page h1 {
+  margin: 20px 0 28px;
+  font-size: clamp(36px, 7vw, 72px);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+}
+
+.not-found-page a {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 42px;
+  padding: 0 16px;
+  color: #071118;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  background: var(--color-cyan);
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.not-found-page a:hover {
+  background: #8aeaff;
+  transform: translateY(-2px);
 }

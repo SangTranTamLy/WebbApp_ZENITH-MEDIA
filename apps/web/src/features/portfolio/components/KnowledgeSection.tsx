@@ -2,10 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-import {
-  articles,
-  snippets,
-} from "../../../content/contentIndex";
+import { snippets } from "../../../content/contentIndex";
 
 export function KnowledgeSection() {
   const [copiedSnippet, setCopiedSnippet] = useState<string | null>(null);
@@ -24,9 +21,6 @@ export function KnowledgeSection() {
       setCopiedSnippet(null);
     }
   }
-
-  const featuredArticle = articles.find((article) => article.featured);
-  const secondaryArticles = articles.filter((article) => !article.featured);
 
   return (
     <section id="knowledge" className="knowledge-section">
@@ -51,83 +45,6 @@ export function KnowledgeSection() {
           đoạn code có thể tái sử dụng trong những dự án thực tế.
         </p>
       </motion.div>
-
-      <div className="knowledge-posts-heading">
-        <span>BÀI VIẾT MỚI NHẤT</span>
-
-        <Link to="/blog">
-          Xem tất cả bài viết
-          <span aria-hidden="true">→</span>
-        </Link>
-      </div>
-
-      <div className="knowledge-posts">
-        {featuredArticle && (
-          <motion.article
-            className="knowledge-article knowledge-article--featured"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.65 }}
-          >
-            <Link to={`/blog/${featuredArticle.slug}`}>
-              <div className="knowledge-article-meta">
-                <span>{featuredArticle.index}</span>
-                <span>{featuredArticle.category}</span>
-              </div>
-
-              <div className="knowledge-article-content">
-                <h3>{featuredArticle.title}</h3>
-
-                <p>{featuredArticle.description}</p>
-
-                <ul>
-                  {featuredArticle.tags.map((tag) => (
-                    <li key={tag}>{tag}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="knowledge-article-footer">
-                <span>{featuredArticle.readingTime}</span>
-                <b aria-hidden="true">↗</b>
-              </div>
-            </Link>
-          </motion.article>
-        )}
-
-        <div className="knowledge-secondary-posts">
-          {secondaryArticles.map((article, index) => (
-            <motion.article
-              className="knowledge-article knowledge-article--compact"
-              key={article.slug}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{
-                duration: 0.6,
-                delay: index * 0.1,
-              }}
-            >
-              <Link to={`/blog/${article.slug}`}>
-                <div className="knowledge-article-meta">
-                  <span>{article.index}</span>
-                  <span>{article.category}</span>
-                </div>
-
-                <h3>{article.title}</h3>
-
-                <p>{article.description}</p>
-
-                <div className="knowledge-article-footer">
-                  <span>{article.readingTime}</span>
-                  <b aria-hidden="true">↗</b>
-                </div>
-              </Link>
-            </motion.article>
-          ))}
-        </div>
-      </div>
 
       <div className="snippets-heading">
         <div>

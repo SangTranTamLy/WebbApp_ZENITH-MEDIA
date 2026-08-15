@@ -1,6 +1,6 @@
 # Zenith Media Workspace
 
-Personal portfolio, technical blog, and reusable code snippets library built by [T.Sang](https://github.com/SangTranTamLy).
+Personal portfolio and reusable code snippets library built by [T.Sang](https://github.com/SangTranTamLy).
 
 Zenith combines product development, technical writing, and visual storytelling in one web experience. The project is designed to showcase real development work, document engineering decisions, and share practical React, TypeScript, Express, and CSS solutions.
 
@@ -8,10 +8,9 @@ Zenith combines product development, technical writing, and visual storytelling 
 
 ## Overview
 
-Zenith currently focuses on three areas:
+Zenith currently focuses on two areas:
 
 - **Developer portfolio** — personal introduction, technical capabilities, and featured GitHub projects.
-- **Technical blog** — development notes, architecture decisions, lessons learned, and project case studies.
 - **Code snippets** — reusable hooks, API helpers, middleware, and animated UI components with syntax highlighting and one-click copy.
 
 ## Features
@@ -24,14 +23,6 @@ Zenith currently focuses on three areas:
 - Technical skills and service overview
 - Accessible contact links
 - Reduced-motion support
-
-### Technical Blog
-
-- Blog listing and article detail routes
-- Category, publication date, reading time, and tags
-- Structured technical content and code examples
-- VS Code-inspired syntax highlighting
-- Copy-to-clipboard code blocks
 
 ### Code Snippets
 
@@ -71,7 +62,7 @@ zenith-workspace/
 │       │   ├── app/             # App, providers, and router
 │       │   ├── assets/          # Images and static assets
 │       │   ├── components/      # Shared layout and UI components
-│       │   ├── content/         # Blog posts and snippets
+│       │   ├── content/         # Snippets and shared content
 │       │   ├── features/        # Feature-specific components
 │       │   ├── pages/           # Route pages
 │       │   ├── services/        # HTTP and API services
@@ -154,8 +145,6 @@ http://localhost:5173
 | Route | Purpose |
 | --- | --- |
 | `/` | Portfolio homepage |
-| `/blog` | Technical blog |
-| `/blog/:slug` | Blog article detail |
 | `/snippets` | Code snippets library |
 | `/snippets/:slug` | Snippet detail |
 
@@ -185,7 +174,7 @@ Frontend styles are separated by responsibility:
 apps/web/src/styles/
 ├── variables.css      # Design tokens and CSS variables
 ├── animations.css     # CSS @keyframes only
-├── portfolio.css      # Portfolio, blog, and snippets UI
+├── portfolio.css      # Portfolio and snippets UI
 └── globals.css        # Imports, reset, and global styles
 ```
 
@@ -213,9 +202,6 @@ The project follows these baseline rules:
 
 ## Roadmap
 
-- [ ] Markdown/MDX article authoring
-- [ ] PostgreSQL persistence for posts, views, and reactions
-- [ ] Blog search and category filters
 - [ ] Snippet language filters
 - [ ] Reaction and view counters
 - [ ] OpenAPI documentation for the Express API

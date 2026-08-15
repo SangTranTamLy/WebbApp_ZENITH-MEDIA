@@ -13,7 +13,7 @@ export function SnippetDetailPage() {
   return (
     <section className="content-page snippet-detail-page">
       <article>
-        <Link className="article-back-link" to="/snippets">
+        <Link className="snippet-back-link" to="/snippets">
           <span aria-hidden="true">←</span>
           BACK TO SNIPPETS
         </Link>

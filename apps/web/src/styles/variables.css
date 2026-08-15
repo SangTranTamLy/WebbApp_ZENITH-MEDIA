@@ -1,11 +1,36 @@
 :root {
+  /* ======================================================
+     GLOBAL COLORS
+  ====================================================== */
+
   --color-background: #080a0f;
   --color-surface: #11151e;
   --color-border: #242a35;
+
   --color-text: #f5f7fa;
   --color-muted: #929cab;
+
   --color-cyan: #48d7ff;
   --color-purple: #8b5cf6;
   --color-green: #5ee6a8;
   --color-error: #ff6b81;
+
+  /* ======================================================
+     AUTH COLORS
+  ====================================================== */
+
+  --auth-background: var(--color-background);
+  --auth-surface: #0a0f17;
+  --auth-input: #111722;
+  --auth-border: #2b3544;
+
+  --auth-text: var(--color-text);
+  --auth-muted: #8995a7;
+
+  --auth-cyan: var(--color-cyan);
+  --auth-purple: var(--color-purple);
+  --auth-discord: #5865f2;
+
+  --auth-success: var(--color-green);
+  --auth-error: #ff6b7a;
 }

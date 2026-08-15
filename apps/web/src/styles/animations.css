@@ -380,18 +380,6 @@
   }
 }
 
-@keyframes contentCardReveal {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @keyframes contentLabelScan {
   0%,
   100% {
@@ -435,6 +423,21 @@
       0 0 35px rgba(139, 92, 246, 0.06);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 /* ======================================================
    CONTENT PAGE ANIMATIONS
 ====================================================== */
@@ -443,18 +446,6 @@
   from {
     opacity: 0;
     transform: translateY(35px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes contentCardReveal {
-  from {
-    opacity: 0;
-    transform: translateY(28px);
   }
 
   to {
@@ -506,5 +497,86 @@
     box-shadow:
       0 30px 90px rgba(0, 0, 0, 0.35),
       0 0 35px rgba(72, 215, 255, 0.06);
+  }
+}
+
+/* ======================================================
+   AUTH ANIMATIONS
+====================================================== */
+
+@keyframes authBackgroundDrift {
+  from {
+    background-position: 0% 0%;
+    transform: scale(1);
+  }
+
+  to {
+    background-position: 100% 100%;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes authBeamShift {
+  from {
+    transform: rotate(23deg) translateX(-3%);
+  }
+
+  to {
+    transform: rotate(28deg) translate(5%, 2%);
+  }
+}
+
+@keyframes authOrbitSpin {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotate(0deg)
+      scaleY(0.48);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotate(360deg)
+      scaleY(0.48);
+  }
+}
+
+@keyframes authOrbitSpinReverse {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotate(360deg)
+      scaleY(0.48);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotate(0deg)
+      scaleY(0.48);
+  }
+}
+
+@keyframes authCorePulse {
+  0%,
+  100% {
+    opacity: 0.8;
+    box-shadow:
+      0 0 0 10px rgba(72, 215, 255, 0.06),
+      0 0 35px 10px rgba(72, 215, 255, 0.25);
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow:
+      0 0 0 15px rgba(72, 215, 255, 0.09),
+      0 0 52px 18px rgba(72, 215, 255, 0.42);
+  }
+}
+
+@keyframes authSpinner {
+  to {
+    transform: rotate(360deg);
   }
 }

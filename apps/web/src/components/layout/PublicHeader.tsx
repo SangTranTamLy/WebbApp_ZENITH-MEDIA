@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const navigationItems = [
   {
@@ -26,6 +26,7 @@ const navigationItems = [
 
 export function PublicHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
 
   function closeMenu() {
     setIsMenuOpen(false);
@@ -59,24 +60,42 @@ export function PublicHeader() {
         }`}
         aria-label="Điều hướng chính"
       >
-        {navigationItems.map((item) => (
-          <a
-            key={item.href}
-            href={item.href}
-            onClick={closeMenu}
-          >
-            {item.label}
-          </a>
-        ))}
+        {navigationItems.map((item) => {
+          if (item.href.startsWith("#")) {
+            if (location.pathname === "/") {
+              return (
+                <a key={item.href} href={item.href} onClick={closeMenu}>
+                  {item.label}
+                </a>
+              );
+            }
+
+            return (
+              <Link
+                key={item.href}
+                to={{ pathname: "/", hash: item.href }}
+                onClick={closeMenu}
+              >
+                {item.label}
+              </Link>
+            );
+          }
+
+          return (
+            <Link key={item.href} to={item.href} onClick={closeMenu}>
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="public-header-actions">
         <Link
-          className="portfolio-login"
-          to="/blog"
+          className="portfolio-cta"
+          to="/login"
           onClick={closeMenu}
         >
-          BLOG
+          ĐĂNG NHẬP
         </Link>
 
         <button

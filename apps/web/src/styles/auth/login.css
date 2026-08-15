@@ -1,0 +1,91 @@
+/* ======================================================
+   LOGIN FORM
+====================================================== */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.auth-form__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.auth-form__status {
+  margin-bottom: 20px;
+}
+
+.auth-form__actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 34px;
+  margin-top: 17px;
+}
+
+.auth-checkbox {
+  display: inline-flex;
+  gap: 9px;
+  align-items: center;
+
+  min-width: 0;
+
+  color: var(--auth-muted);
+  cursor: pointer;
+
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.auth-checkbox__control {
+  flex: 0 0 auto;
+
+  width: 16px;
+  height: 16px;
+  margin: 0;
+
+  cursor: pointer;
+  accent-color: var(--auth-cyan);
+}
+
+.auth-inline-link {
+  flex: 0 0 auto;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.auth-form__submit {
+  justify-content: space-between;
+  margin-top: 19px;
+  padding-right: 22px;
+  padding-left: 22px;
+}
+
+.auth-form__social {
+  margin-top: 28px;
+}
+
+.auth-form__social .auth-divider {
+  margin-top: 0;
+  margin-bottom: 19px;
+}
+
+@media (max-width: 430px) {
+  .auth-form__actions {
+    gap: 8px;
+  }
+
+  .auth-checkbox {
+    gap: 7px;
+    font-size: 11px;
+  }
+
+  .auth-inline-link {
+    font-size: 11px;
+  }
+}

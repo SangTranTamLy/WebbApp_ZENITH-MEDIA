@@ -7,8 +7,15 @@ import { AuthLayout } from "../components/layout/AuthLayout";
 import { PublicLayout } from "../components/layout/PublicLayout";
 import { RouteScrollToTop } from "../components/layout/RouteScrollToTop";
 
+import { RequireAuth } from "../features/auth/RequireAuth";
+
 import { NotFoundPage } from "../pages/NotFoundPage";
+import { ForgotPasswordPage } from "../pages/auth/ForgotPasswordPage";
 import { LoginPage } from "../pages/auth/LoginPage";
+import { RegisterPage } from "../pages/auth/RegisterPage";
+import { ResetPasswordPage } from "../pages/auth/ResetPasswordPage";
+import { VerifyEmailPage } from "../pages/auth/VerifyEmailPage";
+import { CommunityPage } from "../pages/community/CommunityPage";
 import { HomePage } from "../pages/public/HomePage";
 import { SnippetDetailPage } from "../pages/public/SnippetDetailPage";
 import { SnippetsPage } from "../pages/public/SnippetsPage";
@@ -51,6 +58,36 @@ const router = createBrowserRouter([
           {
             path: "/login",
             element: <LoginPage />,
+          },
+          {
+            path: "/register",
+            element: <RegisterPage />,
+          },
+          {
+            path: "/verify-email",
+            element: <VerifyEmailPage />,
+          },
+          {
+            path: "/forgot-password",
+            element: <ForgotPasswordPage />,
+          },
+          {
+            path: "/reset-password",
+            element: <ResetPasswordPage />,
+          },
+        ],
+      },
+
+      /*
+       * PROTECTED COMMUNITY
+       */
+      {
+        element: <RequireAuth />,
+
+        children: [
+          {
+            path: "/community",
+            element: <CommunityPage />,
           },
         ],
       },

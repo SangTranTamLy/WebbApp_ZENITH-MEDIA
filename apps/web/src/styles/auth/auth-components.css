@@ -517,3 +517,144 @@
   font-family: "Inter", sans-serif;
   font-size: 11px;
 }
+
+/* REGISTER FORM & VERIFY EMAIL PAGE */
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+.register-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+
+.register-form__grid .form-field + .form-field {
+  margin-top: 0;
+}
+
+
+.register-form__terms {
+  margin-top: 2px;
+}
+
+
+.register-form__terms a {
+  color: var(--auth-cyan);
+  font-weight: 700;
+}
+
+
+.register-form__terms .form-field__error {
+  margin-left: 25px;
+}
+
+
+.verify-email-state {
+  display: grid;
+  justify-items: start;
+  gap: 14px;
+  color: var(--auth-muted);
+  line-height: 1.6;
+}
+
+
+.verify-email-state p {
+  margin: 0;
+}
+
+
+.verify-email-state strong {
+  color: var(--auth-cyan);
+  overflow-wrap: anywhere;
+}
+
+
+.verify-email-state__icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  color: #061016;
+  font-size: 22px;
+  background: var(--auth-cyan);
+}
+
+
+@media (max-width: 560px) {
+  .register-form__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* VERIFY EMAIL NOTICE, RESEND FORM & LOGIN SUCCESS */
+
+.verify-email-notice {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  margin-bottom: 24px;
+  color: var(--auth-muted);
+  border: 1px solid
+    rgba(72, 215, 255, 0.18);
+  background:
+    rgba(72, 215, 255, 0.05);
+}
+
+
+.verify-email-notice > span {
+  flex: 0 0 auto;
+  color: var(--auth-cyan);
+  font-size: 15px;
+}
+
+
+.verify-email-notice p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+
+.resend-verification-form {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.resend-verification-form__submit {
+  margin-top: 22px;
+}
+
+
+.login-verification-success {
+  margin-bottom: 22px;
+}
+
+/* FORGOT & RESET PASSWORD FORMS */
+
+.forgot-password-form,
+.reset-password-form {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.reset-password-invalid {
+  display: grid;
+  gap: 18px;
+}
+
+
+@media (max-width: 430px) {
+  .forgot-password-form,
+  .reset-password-form {
+    width: 100%;
+  }
+}

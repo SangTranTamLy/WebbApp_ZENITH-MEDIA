@@ -1,65 +1,45 @@
-import express, {
-  type NextFunction,
-  type Request,
-  type Response,
-} from "express";
-import cors from "cors";
-import helmet from "helmet";
-import dotenv from "dotenv";
+import { app } from "./app.js";
+import { env } from "./config/env.js";
 
-dotenv.config();
+const server = app.listen(env.PORT, () => {
+  console.log(
+    `Zenith API đang chạy tại http://localhost:${env.PORT}`,
+  );
 
-const app = express();
+  console.log(
+    `Môi trường: ${env.NODE_ENV}`,
+  );
 
-const port = Number(process.env.PORT) || 4000;
-const webUrl = process.env.WEB_URL || "http://localhost:5173";
-
-app.use(helmet());
-
-app.use(
-  cors({
-    origin: webUrl,
-    credentials: true,
-  }),
-);
-
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true }));
-
-app.get("/api/health", (_request: Request, response: Response) => {
-  response.status(200).json({
-    success: true,
-    message: "Zenith API is running",
-    data: {
-      environment: process.env.NODE_ENV || "development",
-      timestamp: new Date().toISOString(),
-    },
-  });
+  console.log(
+    `Frontend được phép truy cập: ${env.WEB_URL}`,
+  );
 });
 
-app.use((_request: Request, response: Response) => {
-  response.status(404).json({
-    success: false,
-    message: "Không tìm thấy API",
+function shutdown(signal: string) {
+  console.log(
+    `${signal} đã được nhận. Đang dừng API...`,
+  );
+
+  server.close((error) => {
+    if (error) {
+      console.error(
+        "Không thể dừng API an toàn:",
+        error,
+      );
+
+      process.exit(1);
+    }
+
+    console.log("Zenith API đã dừng an toàn.");
+
+    process.exit(0);
   });
+}
+
+process.on("SIGINT", () => {
+  shutdown("SIGINT");
 });
 
-app.use(
-  (
-    error: Error,
-    _request: Request,
-    response: Response,
-    _next: NextFunction,
-  ) => {
-    console.error(error);
-
-    response.status(500).json({
-      success: false,
-      message: "Máy chủ xảy ra lỗi",
-    });
-  },
-);
-
-app.listen(port, () => {
-  console.log(`Zenith API đang chạy tại http://localhost:${port}`);
+process.on("SIGTERM", () => {
+  shutdown("SIGTERM");
 });

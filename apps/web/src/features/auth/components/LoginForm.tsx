@@ -1,16 +1,10 @@
-import { useState } from "react";
-import type { FormEvent } from "react";
-import { Link } from "react-router-dom";
-
+import {useState,type FormEvent,} from "react";
+import {Link, useLocation,useNavigate,} from "react-router-dom";
 import { Button } from "../../../components/ui/Button";
 import { FormField } from "../../../components/ui/FormField";
 import { StatusMessage } from "../../../components/ui/StatusMessage";
-
-import {
-  loginSchema,
-  type LoginFormValues,
-} from "../schemas/loginSchema";
-
+import {loginSchema,type LoginFormValues,} from "../schemas/loginSchema";
+import { useAuth } from "../useAuth";
 import { AuthDivider } from "./AuthDivider";
 import { PasswordInput } from "./PasswordInput";
 import {
@@ -19,12 +13,18 @@ import {
 } from "./SocialLoginButtons";
 
 type LoginErrors = Partial<
-  Record<keyof LoginFormValues, string>
+  Record<"identifier" | "password", string>
 >;
 
 type FormStatus = {
-  variant: "error" | "success" | "info";
+  variant: "error" | "info";
   message: string;
+};
+
+type RedirectState = {
+  from?: {
+    pathname?: string;
+  };
 };
 
 const initialValues: LoginFormValues = {
@@ -33,7 +33,30 @@ const initialValues: LoginFormValues = {
   remember: false,
 };
 
+function getRedirectPath(
+  state: unknown,
+): string {
+  const redirectState = state as RedirectState | null;
+  const pathname =
+    redirectState?.from?.pathname;
+
+  if (
+    typeof pathname === "string" &&
+    pathname.startsWith("/") &&
+    !pathname.startsWith("//") &&
+    pathname !== "/login"
+  ) {
+    return pathname;
+  }
+
+  return "/community";
+}
+
 export function LoginForm() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { signIn } = useAuth();
+
   const [values, setValues] =
     useState<LoginFormValues>(initialValues);
 
@@ -46,17 +69,19 @@ export function LoginForm() {
   const [isSubmitting, setIsSubmitting] =
     useState(false);
 
-  function updateValue<Key extends keyof LoginFormValues>(
+  function updateValue<
+    Key extends keyof LoginFormValues,
+  >(
     key: Key,
     value: LoginFormValues[Key],
   ) {
-    setValues((currentValues) => ({
-      ...currentValues,
+    setValues((current) => ({
+      ...current,
       [key]: value,
     }));
 
-    setErrors((currentErrors) => ({
-      ...currentErrors,
+    setErrors((current) => ({
+      ...current,
       [key]: undefined,
     }));
 
@@ -95,41 +120,40 @@ export function LoginForm() {
       return;
     }
 
-    const validation = loginSchema.safeParse(values);
+    const validation =
+      loginSchema.safeParse(values);
 
     if (!validation.success) {
       applyValidationErrors(
         validation.error.issues,
       );
 
-      setStatus({
-        variant: "error",
-        message:
-          "Vui lòng kiểm tra lại thông tin đăng nhập.",
-      });
-
       return;
     }
 
-    setErrors({});
-    setStatus(null);
     setIsSubmitting(true);
+    setStatus(null);
 
-    /*
-     * Chưa kết nối Supabase hoặc API thật.
-     * Không tạo đăng nhập demo thành công tại đây.
-     */
-    await new Promise<void>((resolve) => {
-      window.setTimeout(resolve, 500);
-    });
+    try {
+      await signIn(validation.data);
 
-    setIsSubmitting(false);
-
-    setStatus({
-      variant: "info",
-      message:
-        "Form hợp lệ. Chức năng đăng nhập sẽ được kết nối với hệ thống xác thực ở giai đoạn backend.",
-    });
+      navigate(
+        getRedirectPath(location.state),
+        {
+          replace: true,
+        },
+      );
+    } catch (error) {
+      setStatus({
+        variant: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Không thể đăng nhập",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   function handleSocialLogin(
@@ -142,7 +166,8 @@ export function LoginForm() {
 
     setStatus({
       variant: "info",
-      message: `Đăng nhập bằng ${providerName} chưa được kết nối với nhà cung cấp xác thực.`,
+      message:
+        `Tính năng đăng nhập ${providerName} sẽ được kết nối `
     });
   }
 
@@ -154,7 +179,9 @@ export function LoginForm() {
     >
       {status ? (
         <div className="auth-form__status">
-          <StatusMessage variant={status.variant}>
+          <StatusMessage
+            variant={status.variant}
+          >
             {status.message}
           </StatusMessage>
         </div>
@@ -173,21 +200,15 @@ export function LoginForm() {
             name="identifier"
             type="text"
             autoComplete="username"
-            placeholder="you@example.com hoặc username"
+            placeholder="Email hoặc username"
             value={values.identifier}
+            disabled={isSubmitting}
             onChange={(event) =>
               updateValue(
                 "identifier",
                 event.target.value,
               )
             }
-            aria-invalid={Boolean(errors.identifier)}
-            aria-describedby={
-              errors.identifier
-                ? "login-identifier-error"
-                : undefined
-            }
-            disabled={isSubmitting}
           />
         </FormField>
 
@@ -203,19 +224,13 @@ export function LoginForm() {
             autoComplete="current-password"
             placeholder="Tối thiểu 8 ký tự"
             value={values.password}
+            disabled={isSubmitting}
             onChange={(event) =>
               updateValue(
                 "password",
                 event.target.value,
               )
             }
-            aria-invalid={Boolean(errors.password)}
-            aria-describedby={
-              errors.password
-                ? "login-password-error"
-                : undefined
-            }
-            disabled={isSubmitting}
           />
         </FormField>
       </div>
@@ -227,13 +242,13 @@ export function LoginForm() {
             name="remember"
             type="checkbox"
             checked={values.remember}
+            disabled={isSubmitting}
             onChange={(event) =>
               updateValue(
                 "remember",
                 event.target.checked,
               )
             }
-            disabled={isSubmitting}
           />
 
           <span>Ghi nhớ đăng nhập</span>
@@ -254,7 +269,7 @@ export function LoginForm() {
         loading={isSubmitting}
         loadingLabel="Đang đăng nhập..."
       >
-        <span>Đăng nhập</span>
+        Đăng nhập
         <span aria-hidden="true">→</span>
       </Button>
 

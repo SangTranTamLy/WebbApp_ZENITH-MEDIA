@@ -1,0 +1,43 @@
+.community-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+
+  color: #f5f7fa;
+  background:
+    radial-gradient(
+      circle at 50% -12%,
+      rgba(72, 215, 255, 0.047),
+      transparent 34%
+    ),
+    #080a0f;
+}
+
+
+.community-content {
+  flex: 1;
+  width: 100%;
+}
+
+
+.community-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 24px clamp(20px, 5vw, 80px);
+
+
+  color: #667183;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 0.13em;
+}
+
+
+@media (max-width: 650px) {
+  .community-footer {
+    gap: 10px;
+    align-items: center;
+    flex-direction: column;
+  }
+}

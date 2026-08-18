@@ -1,10 +1,11 @@
 @import "./animations.css";
 @import "./variables.css";
 @import "./portfolio.css";
-
 @import "./auth/auth-layout.css";
 @import "./auth/auth-components.css";
 @import "./auth/login.css";
+@import "./community/community-layout.css";
+@import "./community/community-header.css";
 :root {
   font-family: "Inter", Arial, sans-serif;
   color: #f5f7fa;

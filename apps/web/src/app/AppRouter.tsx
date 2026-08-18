@@ -16,6 +16,7 @@ import { RegisterPage } from "../pages/auth/RegisterPage";
 import { ResetPasswordPage } from "../pages/auth/ResetPasswordPage";
 import { VerifyEmailPage } from "../pages/auth/VerifyEmailPage";
 import { CommunityPage } from "../pages/community/CommunityPage";
+import { CommunityLayout } from "../components/layout/CommunityLayout";
 import { HomePage } from "../pages/public/HomePage";
 import { SnippetDetailPage } from "../pages/public/SnippetDetailPage";
 import { SnippetsPage } from "../pages/public/SnippetsPage";
@@ -86,8 +87,14 @@ const router = createBrowserRouter([
 
         children: [
           {
-            path: "/community",
-            element: <CommunityPage />,
+            element: <CommunityLayout />,
+
+            children: [
+              {
+                path: "/community",
+                element: <CommunityPage />,
+              },
+            ],
           },
         ],
       },

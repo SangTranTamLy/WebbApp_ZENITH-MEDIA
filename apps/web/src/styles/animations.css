@@ -192,6 +192,37 @@
   }
 }
 
+@keyframes messagingConnectionPulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes messagingTypingDot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes messagingPresencePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(123, 240, 194, 0.18);
+  }
+
+  50% {
+    box-shadow: 0 0 0 4px rgba(123, 240, 194, 0.04);
+  }
+}
+
 /* ======================================================
    SERVICES ANIMATIONS
 ====================================================== */

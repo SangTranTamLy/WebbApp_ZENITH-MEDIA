@@ -1,4 +1,5 @@
 node_modules/
+.pnpm-store/
 dist/
 .env
 .env.*
@@ -6,3 +7,6 @@ dist/
 coverage/
 *.log
 .DS_Store
+docs/
+Avarta_Chatbot/
+report/

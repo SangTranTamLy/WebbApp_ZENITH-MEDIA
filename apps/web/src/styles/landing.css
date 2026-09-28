@@ -1,0 +1,459 @@
+/* =========================================
+   LANDING PAGE V2 (ZENITH GATEWAY DESIGN)
+========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --lp-void-top: oklch(0.11 0.016 264);
+  --lp-void-bottom: oklch(0.14 0.02 266);
+  --lp-code-from: oklch(0.62 0.19 262);
+  --lp-code-to: oklch(0.55 0.24 292);
+  --lp-editor-from: oklch(0.62 0.21 22);
+  --lp-editor-to: oklch(0.78 0.16 72);
+  
+  --lp-gradient-code: linear-gradient(135deg, var(--lp-code-from) 0%, var(--lp-code-to) 100%);
+  --lp-gradient-editor: linear-gradient(135deg, var(--lp-editor-from) 0%, var(--lp-editor-to) 100%);
+  --lp-gradient-spectrum: linear-gradient(100deg, var(--lp-code-from) 0%, var(--lp-code-to) 32%, var(--lp-editor-from) 66%, var(--lp-editor-to) 100%);
+}
+
+.lp-root-v2 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  color: oklch(0.96 0.005 264);
+}
+
+/* Background */
+.lp-ambient-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: var(--lp-void-top);
+  background-image: 
+    radial-gradient(ellipse 80% 60% at 12% 78%, oklch(0.62 0.19 262 / 0.16) 0%, transparent 62%),
+    radial-gradient(ellipse 70% 55% at 88% 12%, oklch(0.62 0.21 22 / 0.14) 0%, transparent 60%),
+    linear-gradient(180deg, var(--lp-void-top) 0%, var(--lp-void-bottom) 100%);
+}
+
+.lp-bg-noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity: 0.035;
+}
+
+.lp-bg-dot-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(oklch(0.98 0.01 264 / 0.5) 1px, transparent 1px);
+  background-size: 26px 26px;
+  opacity: 0.05;
+}
+
+.lp-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  will-change: transform;
+  animation: orb-drift 18s ease-in-out infinite;
+}
+
+.lp-orb-left {
+  bottom: -10rem;
+  left: -8rem;
+  width: 34rem;
+  height: 34rem;
+  background-color: rgba(65, 114, 255, 0.3); /* approx code blue */
+}
+
+.lp-orb-right {
+  top: -10rem;
+  right: -8rem;
+  width: 32rem;
+  height: 32rem;
+  background-color: rgba(255, 68, 0, 0.3); /* approx editor red */
+}
+
+.lp-scanline {
+  position: absolute;
+  inset: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, oklch(0.9 0.06 280 / 0.5) 18%, oklch(0.99 0.02 264 / 0.9) 50%, oklch(0.9 0.06 280 / 0.5) 82%, transparent 100%);
+  animation: scanline 8s linear infinite;
+  will-change: transform;
+}
+
+@keyframes scanline {
+  0% { transform: translate3d(0, -10vh, 0); opacity: 0; }
+  8% { opacity: 0.9; }
+  50% { opacity: 0.55; }
+  92% { opacity: 0.9; }
+  100% { transform: translate3d(0, 110vh, 0); opacity: 0; }
+}
+
+@keyframes orb-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(2%, -3%, 0) scale(1.06); }
+}
+
+/* Header */
+.lp-header-v2 {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 40px;
+}
+
+.lp-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lp-header-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 0.32em;
+  background-image: linear-gradient(180deg, oklch(0.99 0.005 264) 0%, oklch(0.86 0.02 264) 42%, oklch(0.52 0.03 264) 52%, oklch(0.9 0.01 264) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lp-header-subtitle {
+  font-size: 10.4px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.42em;
+  color: oklch(0.66 0.02 264);
+}
+
+/* Main */
+.lp-main-v2 {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 96px;
+}
+
+/* Hero */
+.lp-hero-v2 {
+  text-align: center;
+  padding: 40px 24px 0;
+}
+
+.lp-hero-headline {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(60px, 8vw, 96px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.lp-hero-line-wrap {
+  display: block;
+  overflow: hidden;
+  padding: 4px 0;
+}
+
+.lp-hero-line {
+  display: block;
+  will-change: transform;
+}
+
+.lp-text-metal {
+  background-image: linear-gradient(180deg, oklch(0.99 0.005 264) 0%, oklch(0.86 0.02 264) 42%, oklch(0.52 0.03 264) 52%, oklch(0.9 0.01 264) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lp-text-gradient-spectrum {
+  background-image: var(--lp-gradient-spectrum);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lp-hero-sub-v2 {
+  margin-top: 32px;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  color: oklch(0.66 0.02 264);
+}
+
+/* Cards Section */
+.lp-paths-section {
+  margin-top: 64px;
+  width: 100%;
+  max-width: 1024px;
+  padding: 0 24px;
+}
+
+.lp-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  position: relative;
+}
+
+.lp-card-wrapper-v2 {
+  perspective: 1400px;
+}
+
+.lp-card-v2 {
+  display: block;
+  position: relative;
+  min-height: 448px;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  text-decoration: none;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: border-color 0.5s ease;
+  padding: 40px;
+}
+
+.lp-card-v2.path-code {
+  border-radius: 40px 12px 40px 12px;
+}
+
+.lp-card-v2.path-editor {
+  border-radius: 12px 40px 12px 40px;
+}
+
+.lp-card-v2.path-code:hover {
+  border-color: rgba(59, 130, 246, 0.6);
+}
+
+.lp-card-v2.path-editor:hover {
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+/* Card Glow & Background */
+.lp-card-bg-mask {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.lp-card-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.path-code:hover .lp-card-glow {
+  opacity: 1;
+  box-shadow: 0 0 0 1px oklch(0.62 0.19 262 / 0.55), 0 0 48px -6px oklch(0.62 0.19 262 / 0.55), 0 0 120px -18px oklch(0.55 0.24 292 / 0.5);
+}
+
+.path-editor:hover .lp-card-glow {
+  opacity: 1;
+  box-shadow: 0 0 0 1px oklch(0.62 0.21 22 / 0.55), 0 0 48px -6px oklch(0.62 0.21 22 / 0.55), 0 0 120px -18px oklch(0.78 0.16 72 / 0.5);
+}
+
+.lp-card-icons {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  opacity: 0.07;
+  transition: opacity 0.5s ease;
+}
+
+.lp-card-icons span {
+  font-size: 72px;
+  color: white;
+}
+
+.lp-card-v2:hover .lp-card-icons {
+  opacity: 0.14;
+}
+
+/* Inner Content */
+.lp-card-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.lp-card-v2:hover .lp-card-content {
+  transform: translateZ(40px);
+}
+
+.lp-card-eyebrow {
+  font-size: 10.4px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.42em;
+  color: oklch(0.66 0.02 264);
+}
+
+.lp-card-title-v2 {
+  margin: 16px 0 0;
+  font-family: 'Outfit', sans-serif;
+  font-size: 60px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 0 oklch(0.3 0.03 264 / 0.5), 0 2px 0 oklch(0.26 0.03 264 / 0.42), 0 3px 0 oklch(0.22 0.03 264 / 0.34), 0 4px 8px oklch(0.1 0.02 264 / 0.6), 0 12px 34px oklch(0.1 0.02 264 / 0.55);
+}
+
+.path-code .lp-card-title-v2 {
+  background-image: var(--lp-gradient-code);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.path-editor .lp-card-title-v2 {
+  background-image: var(--lp-gradient-editor);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lp-card-desc-v2 {
+  margin: 24px 0 0;
+  max-width: 320px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #8892b0;
+}
+
+.lp-card-cta-wrap {
+  margin-top: 40px;
+  overflow: hidden;
+}
+
+.lp-card-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 9999px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.path-code .lp-card-cta-btn {
+  background: var(--lp-gradient-code);
+}
+
+.path-editor .lp-card-cta-btn {
+  background: var(--lp-gradient-editor);
+}
+
+
+
+.lp-card-cta-btn svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.lp-card-cta-btn:hover svg {
+  transform: translateX(4px);
+}
+
+/* Badge OR */
+.lp-badge-or {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 20;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.lp-badge-or-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: oklch(0.98 0.01 264 / 0.08);
+  border: 1px solid oklch(0.98 0.01 264 / 0.14);
+  backdrop-filter: blur(32px) saturate(160%);
+  -webkit-backdrop-filter: blur(32px) saturate(160%);
+  box-shadow: inset 0 1px 0 0 oklch(0.98 0.01 264 / 0.08), 0 24px 60px -24px oklch(0.08 0.02 264 / 0.85);
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Footer */
+.lp-paths-footer {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 11.2px;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: oklch(0.66 0.02 264);
+}
+
+.lp-paths-footer svg {
+  width: 14px;
+  height: 14px;
+}
+
+@media (max-width: 640px) {
+  .lp-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .lp-badge-or {
+    display: none;
+  }
+  .lp-header-title {
+    font-size: 24px;
+  }
+  .lp-header-subtitle {
+    display: none;
+  }
+  .lp-card-v2 {
+    min-height: 384px;
+    padding: 32px;
+  }
+  .lp-card-title-v2 {
+    font-size: 48px;
+  }
+}

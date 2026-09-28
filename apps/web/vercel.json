@@ -1,9 +1,13 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm build:deploy",
+  "outputDirectory": "dist",
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://zenith-api-rvp5.onrender.com/api/:path*"
+      "destination": "https://api.zenith.io.vn/api/:path*"
     },
     {
       "source": "/:path*",

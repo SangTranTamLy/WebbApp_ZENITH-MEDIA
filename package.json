@@ -1,32 +1,16 @@
 {
-  "name": "@zenith/web",
+  "name": "zenith-workspace",
   "version": "1.0.0",
+  "private": true,
   "packageManager": "pnpm@11.18.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Zenith Media Workspace monorepo",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "web:build": "pnpm --filter @zenith/web build",
+    "web:build:deploy": "pnpm --filter @zenith/web build:deploy",
+    "api:typecheck": "pnpm --filter @zenith/api typecheck",
+    "api:build": "pnpm --filter @zenith/api build",
+    "api:start": "pnpm --filter @zenith/api start",
+    "web:verify-deployment": "node scripts/verify-web-deployment.mjs"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.18.0",
-      "onFail": "download"
-    }
-  },
-  "type": "module",
-  "devDependencies": {
-    "@types/react-syntax-highlighter": "^15.5.13",
-    "typescript": "^5.7.2"
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.112.3",
-    "framer-motion": "^12.43.0",
-    "react-router-dom": "^7.18.1",
-    "react-syntax-highlighter": "^16.1.1",
-    "zod": "^4.4.3"
-  }
+  "type": "module"
 }

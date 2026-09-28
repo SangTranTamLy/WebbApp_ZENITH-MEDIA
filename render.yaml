@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: zenith-api
+    runtime: node
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm api:build
+    startCommand: pnpm api:start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: WEB_URL
+        value: https://zenith.io.vn
+      - key: CORS_ORIGINS
+        value: https://zenith.io.vn,https://www.zenith.io.vn
+      - key: DATABASE_URL
+        sync: false
+      - key: AI_MODEL_URL
+        sync: false
+      - key: AI_MODEL_NAME
+        sync: false
+      - key: EMBEDDING_MODEL
+        sync: false

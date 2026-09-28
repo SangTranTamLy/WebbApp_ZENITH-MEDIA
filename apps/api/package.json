@@ -1,40 +1,37 @@
 {
   "name": "@zenith/api",
-  "version": "0.1.0",
-  "private": true,
-  "description": "Backend API cho Zenith Media Workspace",
-  "type": "module",
-  "main": "dist/server.js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc -p tsconfig.json",
-    "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"Chưa cấu hình kiểm thử\""
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/server.js",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
-  "keywords": [
-    "zenith",
-    "express",
-    "typescript"
-  ],
-  "author": "T.Sang",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
+  "type": "module",
   "dependencies": {
-    "@supabase/supabase-js": "^2.112.3",
-    "cookie-parser": "^1.4.7",
+    "@google/generative-ai": "^0.24.1",
     "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
+    "dotenv": "^18.0.3",
+    "drizzle-orm": "^0.45.3",
     "express": "^5.2.1",
-    "express-rate-limit": "^8.6.2",
-    "helmet": "^8.3.0",
-    "zod": "^4.4.3"
+    "pgvector": "^0.3.0",
+    "postgres": "^3.4.9",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
-    "@types/node": "^24.13.3",
-    "tsx": "^4.23.1",
-    "typescript": "~6.0.3"
+    "@types/node": "^26.6.2",
+    "drizzle-kit": "^0.31.11",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }

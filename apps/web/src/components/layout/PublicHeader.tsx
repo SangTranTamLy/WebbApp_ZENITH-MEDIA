@@ -1,32 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-const navigationItems = [
-  {
-    label: "Dự án",
-    href: "#development",
-  },
-  {
-    label: "Giới thiệu",
-    href: "#about",
-  },
-  {
-    label: "Snippets",
-    href: "/snippets",
-  },
-  {
-    label: "Dịch vụ",
-    href: "#services",
-  },
-  {
-    label: "Liên hệ",
-    href: "#contact",
-  },
-];
-
 export function PublicHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+
+  const isEditor = location.pathname.startsWith("/editor");
+  const isLanding = location.pathname === "/";
 
   function closeMenu() {
     setIsMenuOpen(false);
@@ -36,8 +16,27 @@ export function PublicHeader() {
     setIsMenuOpen((currentState) => !currentState);
   }
 
+  const codeNav = [
+    { label: "About", href: "#about" },
+    { label: "Projects", href: "#development" },
+    { label: "Contact", href: "#contact" },
+  ];
+
+  const editorNav = [
+    { label: "Giới Thiệu", href: "#about" },
+    { label: "Công Nghệ", href: "#plugins" },
+    { label: "Dự Án", href: "#works" },
+    { label: "Liên Hệ", href: "#contact" },
+  ];
+
+  const navItems = isEditor ? editorNav : codeNav;
+
+  if (isLanding) {
+    return null; // Don't show header on the split-screen landing page
+  }
+
   return (
-    <header className="public-header">
+    <header className={`public-header ${isEditor ? "header-editor" : ""}`}>
       <Link
         className="public-brand"
         to="/"
@@ -48,66 +47,35 @@ export function PublicHeader() {
           className="public-brand-mark"
           aria-hidden="true"
         />
-
         <strong>ZENITH</strong>
-        <span>/ MEDIA</span>
+        <span>/ {isEditor ? "EDITOR" : "CODE"}</span>
       </Link>
 
       <nav
         id="public-navigation"
-        className={`public-navigation ${
-          isMenuOpen ? "public-navigation--open" : ""
-        }`}
+        className={`public-navigation ${isMenuOpen ? "public-navigation--open" : ""}`}
         aria-label="Điều hướng chính"
       >
-        {navigationItems.map((item) => {
-          if (item.href.startsWith("#")) {
-            if (location.pathname === "/") {
-              return (
-                <a key={item.href} href={item.href} onClick={closeMenu}>
-                  {item.label}
-                </a>
-              );
-            }
-
-            return (
-              <Link
-                key={item.href}
-                to={{ pathname: "/", hash: item.href }}
-                onClick={closeMenu}
-              >
-                {item.label}
-              </Link>
-            );
-          }
-
-          return (
-            <Link key={item.href} to={item.href} onClick={closeMenu}>
-              {item.label}
-            </Link>
-          );
-        })}
+        {navItems.map((item) => (
+          <a key={item.href} href={item.href} onClick={closeMenu}>
+            {item.label}
+          </a>
+        ))}
       </nav>
 
       <div className="public-header-actions">
         <Link
-          className="portfolio-cta"
-          to="/login"
+          className="portfolio-cta switch-btn"
+          to={isEditor ? "/code" : "/editor"}
           onClick={closeMenu}
         >
-          ĐĂNG NHẬP
+          {isEditor ? "SWITCH TO CODE ↗" : "SWITCH TO EDITOR ↗"}
         </Link>
 
         <button
-          className={`mobile-menu-button ${
-            isMenuOpen ? "mobile-menu-button--open" : ""
-          }`}
+          className={`mobile-menu-button ${isMenuOpen ? "mobile-menu-button--open" : ""}`}
           type="button"
-          aria-label={
-            isMenuOpen
-              ? "Đóng menu điều hướng"
-              : "Mở menu điều hướng"
-          }
+          aria-label={isMenuOpen ? "Đóng menu" : "Mở menu"}
           aria-expanded={isMenuOpen}
           aria-controls="public-navigation"
           onClick={toggleMenu}

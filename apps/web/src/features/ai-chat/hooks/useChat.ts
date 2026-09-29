@@ -23,6 +23,11 @@ export function useChat() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const getChatEndpoint = () => {
+    const configuredApiOrigin = import.meta.env.VITE_API_BASE_URL?.trim().replace(/\/+$/, "");
+    return configuredApiOrigin ? `${configuredApiOrigin}/api/chat` : "/api/chat";
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -51,6 +56,8 @@ export function useChat() {
     ]);
 
     setBotState("thinking");
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 45_000);
 
     try {
       // Create the messages array to send to backend
@@ -59,12 +66,17 @@ export function useChat() {
         content: m.content,
       }));
 
-      // In development, the Vite proxy handles /api to localhost:4000
-      const response = await fetch("/api/chat", {
+      const response = await fetch(getChatEndpoint(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: apiMessages }),
+        signal: controller.signal,
       });
+
+      const contentType = response.headers.get("content-type") ?? "";
+      if (!response.ok || !contentType.includes("text/event-stream")) {
+        throw new Error(`Chat API returned ${response.status}`);
+      }
 
       if (!response.body) throw new Error("No response body");
 
@@ -114,14 +126,20 @@ export function useChat() {
       setBotState("error");
       setTimeout(() => setBotState("idle"), 5000);
       setMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now().toString(),
-          role: "assistant",
-          content: "Sorry, I encountered an error connecting to the server.",
-        },
+        ...prev.map((msg) =>
+          msg.id === botMessageId
+            ? {
+                ...msg,
+                content:
+                  error instanceof DOMException && error.name === "AbortError"
+                    ? "Máy chủ phản hồi quá lâu. Vui lòng thử lại sau ít giây."
+                    : "Mình chưa kết nối được máy chủ. Vui lòng thử lại.",
+              }
+            : msg,
+        ),
       ]);
     } finally {
+      window.clearTimeout(timeoutId);
       setIsLoading(false);
     }
   };

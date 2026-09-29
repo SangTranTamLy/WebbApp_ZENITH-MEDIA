@@ -246,19 +246,6 @@ function AiAssistantPromo() {
               <span>Powered by Qwen 2.5</span>
             </div>
           </div>
-          
-          <div style={{ marginTop: '32px' }}>
-            <a 
-              href="/mda-assistant.pdf" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="lp-card-cta-btn"
-              style={{ background: 'oklch(0.2 0.03 264 / 0.8)', border: '1px solid oklch(0.3 0.04 264)' }}
-            >
-              Read Architecture Whitepaper (PDF)
-              <ArrowRight aria-hidden="true" />
-            </a>
-          </div>
         </div>
       </motion.div>
     </section>

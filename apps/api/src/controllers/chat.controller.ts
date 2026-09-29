@@ -23,9 +23,17 @@ export class ChatController {
         return res.status(400).json({ error: "Messages array is required." });
       }
 
+      // Lọc các role không được phép từ client
+      const filteredMessages = messages
+        .filter((msg) => msg && !["system", "developer", "tool"].includes(msg.role))
+        .map((msg) => ({
+          role: msg.role === "assistant" ? "assistant" : "user", // Force role to user/assistant
+          content: msg.content,
+        }));
+
       // The public endpoint never accepts a caller-provided role. Private mode
       // must not be reachable by changing JSON in the browser.
-      const publicMessages = messages.slice(-24);
+      const publicMessages = filteredMessages.slice(-24);
 
       // 1. Setup SSE Headers
       res.setHeader("Content-Type", "text/event-stream; charset=utf-8");

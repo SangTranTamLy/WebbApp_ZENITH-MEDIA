@@ -205,6 +205,66 @@ function PathCard({ config, isDimmed, isHovered, onHoverStart, onHoverEnd }: Pat
   );
 }
 
+function AiAssistantPromo() {
+  const reduceMotion = useReducedMotion();
+  
+  return (
+    <section className="lp-ai-promo">
+      <motion.div 
+        initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="lp-ai-promo-inner"
+      >
+        <div className="lp-ai-promo-bg" aria-hidden="true">
+          <div className="lp-ai-promo-glow" />
+          <div className="lp-ai-promo-grid" />
+        </div>
+        
+        <div className="lp-ai-promo-content">
+          <div className="lp-ai-promo-badge">
+            <Sparkles aria-hidden="true" />
+            <span>Zenith AI Engine</span>
+          </div>
+          
+          <h2 className="lp-ai-promo-title">
+            Meet <span className="lp-text-gradient-primary">MDA Assistant</span>
+          </h2>
+          
+          <p className="lp-ai-promo-desc">
+            An intelligent, context-aware AI trained exclusively on my portfolio, projects, and domain knowledge. Ask deep technical questions, explore my workflow, or just say hi.
+          </p>
+          
+          <div className="lp-ai-promo-features">
+            <div className="lp-ai-feature">
+              <Terminal aria-hidden="true" />
+              <span>Contextual RAG Retrieval</span>
+            </div>
+            <div className="lp-ai-feature">
+              <Layers aria-hidden="true" />
+              <span>Powered by Qwen 2.5</span>
+            </div>
+          </div>
+          
+          <div style={{ marginTop: '32px' }}>
+            <a 
+              href="/mda-assistant.pdf" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="lp-card-cta-btn"
+              style={{ background: 'oklch(0.2 0.03 264 / 0.8)', border: '1px solid oklch(0.3 0.04 264)' }}
+            >
+              Read Architecture Whitepaper (PDF)
+              <ArrowRight aria-hidden="true" />
+            </a>
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
 export function LandingPage() {
   const [hovered, setHovered] = useState<PathKey | null>(null);
 
@@ -238,7 +298,10 @@ export function LandingPage() {
             Select a discipline
           </p>
         </section>
+        
+        <AiAssistantPromo />
       </main>
     </div>
   );
 }
+

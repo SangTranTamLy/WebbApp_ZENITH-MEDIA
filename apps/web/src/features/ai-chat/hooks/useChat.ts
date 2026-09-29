@@ -74,6 +74,8 @@ export function useChat() {
 
       while (true) {
         const { value, done } = await reader.read();
+        if (done) break;
+        
         sseBuffer += decoder.decode(value ?? new Uint8Array(), { stream: !done });
         const events = sseBuffer.split("\n\n");
         sseBuffer = events.pop() ?? "";

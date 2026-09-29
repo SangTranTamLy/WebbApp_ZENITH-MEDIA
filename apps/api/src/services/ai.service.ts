@@ -72,10 +72,18 @@ const socialResponse = `Các kênh Media/Sáng tạo của Sang:
 - **TikTok AMV:** [@fairytail100yq_mvs](${PORTFOLIO_KNOWLEDGE.social.tiktokAmv})`;
 
 const projectAliases: ReadonlyArray<{ terms: readonly string[]; project: PortfolioProject }> =
-  PORTFOLIO_KNOWLEDGE.projects.map((project) => ({
-    project,
-    terms: [normalize(project.title), normalize(project.title).replace(/\s+/g, "-")],
-  }));
+  PORTFOLIO_KNOWLEDGE.projects.map((project) => {
+    const normalizedTitle = normalize(project.title);
+    const shortName = normalizedTitle.split(" ")[0]; // e.g. "quickserve", "study", "zenith"
+    return {
+      project,
+      terms: [
+        normalizedTitle, 
+        normalizedTitle.replace(/\s+/g, "-"),
+        shortName || ""
+      ].filter((t) => t !== ""),
+    };
+  });
 
 const isProjectQuestion = (value: string): boolean =>
   includesAny(value, ["du an", "project", "repo", "repository", "github"]);
@@ -134,7 +142,7 @@ const answerPublicMessage = (content: string): string => {
     return PUBLIC_REFUSAL;
   }
 
-  if (includesAny(value, ["gio", "thoi gian", "hom nay", "ngay may", "thu may", "bay gio"])) {
+  if (includesAny(value, ["gio", "thoi gian", "hom nay", "ngay may", "thu may", "bay gio", "may h", "giwof"])) {
     return timeResponse();
   }
 
@@ -142,7 +150,7 @@ const answerPublicMessage = (content: string): string => {
     return CONTACT_RESPONSE;
   }
 
-  if (includesAny(value, ["ban la ai", "ban lam duoc gi", "muc dich tao ra", "bot hay nguoi", "co phai sang dang chat"])) {
+  if (includesAny(value, ["ban la ai", "ban lam duoc gi", "muc dich tao ra", "bot hay nguoi", "co phai sang dang chat", "ban ten gi", "ten cua ban", "may ten gi"])) {
     return identityResponse;
   }
 
@@ -160,9 +168,11 @@ const answerPublicMessage = (content: string): string => {
 
   if (isSpecificUnknownProjectQuestion(value)) return PUBLIC_REFUSAL;
 
+  // Nếu khách hỏi đích danh 1 project cụ thể có trong hệ thống -> Chuyển thẳng xuống RAG (Bằng cách return PUBLIC_REFUSAL)
   const knownProject = getKnownProject(value);
-  if (knownProject) return formatProject(knownProject);
+  if (knownProject) return PUBLIC_REFUSAL; 
 
+  // Nếu khách hỏi chung chung "Liệt kê dự án", "Bạn có dự án nào" -> Trả về danh sách tĩnh
   if (isProjectQuestion(value)) return projectsResponse();
 
   if (includesAny(value, ["ky nang", "skill", "frontend", "backend", "html", "css", "javascript", "react", "typescript", "node", "express", "postgresql", "chung chi"])) {
@@ -213,8 +223,85 @@ export class AIService {
     );
 
     const lastUserMessage = [...safeMessages].reverse().find((message) => message.role === "user");
-    const response = answerPublicMessage(lastUserMessage?.content ?? "");
+    const userContent = lastUserMessage?.content ?? "";
+    const deterministicResponse = answerPublicMessage(userContent);
 
-    yield { text: () => response };
+    // If deterministic logic handled it, return immediately.
+    if (deterministicResponse !== PUBLIC_REFUSAL) {
+      yield { text: () => deterministicResponse };
+      return;
+    }
+
+    // Phase 4: RAG fallback for complex questions
+    const { RagService } = await import("./rag.service.js");
+    const contexts = await RagService.retrieve(userContent, 3);
+    
+    if (contexts.length === 0) {
+      yield { text: () => PUBLIC_REFUSAL };
+      return;
+    }
+
+    const contextText = contexts.map((c, i) => `[Source ${i + 1}]: ${c.content}`).join("\n\n");
+
+    const prompt = `Bạn là MDA, trợ lý AI của Châu Thanh Sang. Dưới đây là thông tin dự án (được rút trích từ RAG) để trả lời câu hỏi của người dùng.
+TUYỆT ĐỐI TUÂN THỦ:
+1. Chỉ trả lời dựa trên nội dung [Source Data] được cung cấp dưới đây.
+2. Không tự bịa thêm thông tin, không nhắc đến những dự án/chứng chỉ không có trong [Source Data].
+3. Ngôn ngữ giao tiếp: Tiếng Việt, xưng "mình", gọi người dùng là "bạn", nhắc đến chủ nhân là "Thanh Sang" hoặc "Sang".
+4. Nếu [Source Data] không chứa đủ thông tin để trả lời câu hỏi, HÃY TRẢ LỜI ĐÚNG VĂN MẪU SAU VÀ KHÔNG THÊM GÌ KHÁC: "${PUBLIC_REFUSAL}"
+
+[Source Data]:
+${contextText}`;
+
+    const ollamaUrl = process.env.AI_MODEL_URL || "http://127.0.0.1:11434";
+    const model = process.env.AI_MODEL_NAME || "qwen2.5:3b";
+
+    try {
+      const response = await fetch(`${ollamaUrl.replace('/v1', '')}/api/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: model,
+          messages: [
+            { role: "system", content: prompt },
+            { role: "user", content: userContent }
+          ],
+          stream: true
+        })
+      });
+
+      if (!response.ok || !response.body) {
+        yield { text: () => PUBLIC_REFUSAL };
+        return;
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || "";
+        
+        for (const line of lines) {
+          if (line.trim() === "") continue;
+          try {
+            const parsed = JSON.parse(line);
+            if (parsed.message?.content) {
+              const content = parsed.message.content;
+              yield { text: () => content };
+            }
+          } catch (e) {
+            // ignore JSON parse error for incomplete chunks
+          }
+        }
+      }
+    } catch (error) {
+      console.error("[AIService] LLM Fetch Error:", error);
+      yield { text: () => PUBLIC_REFUSAL };
+    }
   }
 }

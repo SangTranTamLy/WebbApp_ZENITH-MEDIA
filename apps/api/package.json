@@ -10,7 +10,8 @@
     "start": "node dist/server.js",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "ingest": "tsx src/scripts/ingest-portfolio.ts"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,7 @@
     "dotenv": "^18.0.3",
     "drizzle-orm": "^0.45.3",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
     "pgvector": "^0.3.0",
     "postgres": "^3.4.9",
     "zod": "^4.6.5"
@@ -29,8 +31,11 @@
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/express-rate-limit": "^6.0.2",
     "@types/node": "^26.6.2",
     "drizzle-kit": "^0.31.11",
+    "marked": "^18.0.14",
+    "puppeteer": "^25.12.0",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }

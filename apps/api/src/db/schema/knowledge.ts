@@ -2,7 +2,7 @@ import { pgTable, uuid, text, timestamp, varchar, jsonb, integer, customType } f
 
 const vector = customType<{ data: number[]; driverData: string }>({
   dataType() {
-    return 'vector(1536)';
+    return 'vector(768)';
   },
   toDriver(value: number[]): string {
     return `[${value.join(',')}]`;

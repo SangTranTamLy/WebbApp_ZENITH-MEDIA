@@ -9,7 +9,7 @@ export type PortfolioProject = {
 // This is the only public source of truth used by the chatbot.
 // Do not add inferred facts, certifications, clients, dates, or placeholder URLs here.
 export const PORTFOLIO_KNOWLEDGE = {
-  fullName: "Châu Thanh Sang",
+  fullName: "Thanh Sang",
   codeName: "SangTranTamLy",
   mediaName: "Zenith",
   displayName: "T.Sang",

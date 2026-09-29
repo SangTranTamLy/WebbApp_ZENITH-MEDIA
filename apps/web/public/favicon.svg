@@ -1,0 +1,17 @@
+<svg viewBox="-6 0 26 23" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="brand-grad" gradientTransform="rotate(15, 0.5, 0.5)">
+      <stop offset="0%" stop-color="#48d7ff" />
+      <stop offset="28%" stop-color="#48d7ff" />
+      <stop offset="29%" stop-color="transparent" />
+      <stop offset="37%" stop-color="transparent" />
+      <stop offset="38%" stop-color="#48d7ff" />
+      <stop offset="66%" stop-color="#48d7ff" />
+      <stop offset="67%" stop-color="transparent" />
+      <stop offset="75%" stop-color="transparent" />
+      <stop offset="76%" stop-color="#48d7ff" />
+      <stop offset="100%" stop-color="#48d7ff" />
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="19" height="23" transform="skewX(-12)" fill="url(#brand-grad)" />
+</svg>

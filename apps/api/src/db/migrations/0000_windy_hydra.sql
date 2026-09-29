@@ -49,7 +49,7 @@ CREATE TABLE "knowledge_chunks" (
 	"document_id" uuid NOT NULL,
 	"chunk_index" integer,
 	"content" text NOT NULL,
-	"embedding" vector(1536),
+	"embedding" vector(768),
 	"token_count" integer,
 	"metadata" jsonb,
 	"created_at" timestamp DEFAULT now() NOT NULL

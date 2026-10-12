@@ -9,6 +9,8 @@
     "web:build:deploy": "pnpm --filter @zenith/web build:deploy",
     "api:typecheck": "pnpm --filter @zenith/api typecheck",
     "api:build": "pnpm --filter @zenith/api build",
+    "api:db:migrate": "pnpm --filter @zenith/api db:migrate",
+    "api:test:ingestion": "pnpm --filter @zenith/api test:ingestion",
     "api:start": "pnpm --filter @zenith/api start",
     "web:verify-deployment": "node scripts/verify-web-deployment.mjs"
   },

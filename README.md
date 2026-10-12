@@ -1,92 +1,131 @@
 # Zenith Media Workspace & MDA AI Assistant
 
-A next-generation personal portfolio, media showcase, and reusable code snippets library built by [T.Sang](https://github.com/SangTranTamLy). 
+> **Two paths. One vision. Code meets cinema.**  
+> A personal portfolio, creative media showcase, and intelligent AI assistant built by **[T.Sang](https://github.com/SangTranTamLy)**.
 
-Zenith is not just a static portfolio—it is powered by **MDA (Multi-Domain Assistant)**, an intelligent AI representative built directly into the core experience. MDA actively analyzes the portfolio, introduces Sang's background in Code and Media, and provides an interactive gateway for visitors to explore projects, technical decisions, and media creations.
+[![React](https://img.shields.io/badge/Frontend-React%2019-61dafb?style=flat-square&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/Language-TypeScript-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Express](https://img.shields.io/badge/Backend-Express%205-lightgrey?style=flat-square&logo=express)](https://expressjs.com/)
+[![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL%20%2F%20Supabase-336791?style=flat-square&logo=postgresql)](https://supabase.com/)
+[![pnpm](https://img.shields.io/badge/Monorepo-pnpm%20workspaces-orange?style=flat-square&logo=pnpm)](https://pnpm.io/)
 
-> Planned domain: [zenith.io.vn](https://zenith.io.vn)
+Domain dự kiến: [zenith.io.vn](https://zenith.io.vn)
 
-## Overview
+---
 
-Zenith is structured around four primary pillars:
+## 📑 Mục Lục (Table of Contents)
 
-- **MDA AI Assistant (Interactive Avatar)** — An intelligent, context-aware chatbot using Google's latest Gemini models. MDA acts as a personal representative, answering questions about Sang's skills, projects, and media work in real-time.
-- **Developer & Media Portfolio** — A cinematic presentation of personal branding, technical capabilities, and featured GitHub repositories, heavily focused on the intersection of Code and Media.
-- **Code Snippets Library** — A collection of reusable hooks, API helpers, middleware, and animated UI components with syntax highlighting and one-click copy.
-- **Community & Messenger** — Authenticated community access and secure member-to-member messaging through a dedicated Express BFF.
+1. [Tổng Quan (Overview)](#-tổng-quan-overview)
+2. [Các Tính Năng Cốt Lõi (Core Features)](#-các-tính-năng-cốt-lõi-core-features)
+   - [Trang Chủ (Landing Page)](#1-trang-chủ-landing-page)
+   - [Khu Lập Trình (Code Portfolio)](#2-khu-lập-trình-code-portfolio)
+   - [Khu Biên Tập & Media (Editor Portfolio)](#3-khu-biên-tập--media-editor-portfolio)
+   - [Trợ Lý AI Đại Diện (MDA AI Assistant)](#4-trợ-lý-ai-đại-diện-mda-ai-assistant)
+3. [Công Nghệ Sử Dụng (Tech Stack)](#-công-nghệ-sử-dụng-tech-stack)
+4. [Cấu Trúc Thư Mục (Repository Structure)](#-cấu-trúc-thư-mục-repository-structure)
+5. [Hướng Dẫn Cài Đặt & Khởi Chạy (Getting Started)](#-hướng-dẫn-cài-đặt--khởi-chạy-getting-started)
+   - [Yêu cầu hệ thống](#1-yêu-cầu-hệ-thống)
+   - [Cài đặt gói phụ thuộc](#2-cài-đặt-gói-phụ-thuộc)
+   - [Cấu hình biến môi trường (.env)](#3-cấu-hình-biến-môi-trường-env)
+   - [Khởi chạy môi trường phát triển (Dev)](#4-khởi-chạy-môi-trường-phát-triển-dev)
+6. [Các Lệnh Thường Dùng (Useful Scripts)](#-các-lệnh-thường-dùng-useful-scripts)
+7. [Tác Giả & Liên Hệ (Author)](#-tác-giả--liên-hệ-author)
 
-## Features
+---
 
-### MDA AI Assistant (New!)
-- Intelligent, context-aware responses powered by Gemini 3.1 Flash Lite.
-- Real-time SSE streaming for ultra-fast chat experiences.
-- Sleek, glassmorphism UI overlay (Floating Widget) with markdown and code block support.
-- Deep integration with portfolio content and web search capabilities via Tavily API.
+## 🚀 Tổng Quan (Overview)
 
-### Portfolio & Media
-- Responsive cinematic landing page with dark, neon-accented aesthetics.
-- Animated Hero and About sections using Framer Motion.
-- GitHub profile and selected repositories integration.
-- Dedicated showcase for Code, UI/UX, and Media projects.
+**Zenith Media Workspace** không chỉ là một trang web portfolio cá nhân thông thường. Đây là một không gian sáng tạo tích hợp (Creative Studio) dung hợp hai niềm đam mê lớn: **Kỹ thuật phần mềm (Code)** và **Hậu kỳ video / Điện ảnh (Media & Editing)**.
 
-### Code Snippets
-- Reusable TypeScript, Express, React, and CSS examples.
-- Compact code previews with syntax highlighting and line numbers.
-- Dedicated snippet detail pages with copy status handling.
+Dự án được trang bị **MDA (Multi-Domain Assistant)** — trợ lý AI độc quyền có khả năng tương tác trực tiếp với khách truy cập, giải đáp về năng lực công nghệ, quy trình biên tập và số liệu dự án của tác giả dựa trên cơ sở tri thức đã được kiểm chứng (Grounded RAG).
 
-### Community and Messenger
-- HttpOnly-cookie authentication through the Express BFF.
-- Direct conversations with text messages, edit, recall, and delete-for-me actions.
-- Cookie-authenticated WebSocket events with reconnect and REST resync.
-- RLS-protected Supabase/PostgreSQL messaging data.
+---
 
-## Tech Stack
+## ✨ Các Tính Năng Cốt Lõi (Core Features)
 
-| Area | Technologies |
-| --- | --- |
-| **Frontend UI** | React 19, TypeScript, Vite |
-| **AI Engine** | Google Gemini SDK, Server-Sent Events (SSE) |
-| **Routing** | React Router |
-| **Animation** | Framer Motion, Vanilla CSS Animations |
-| **Code Highlighting**| React Syntax Highlighter |
-| **Backend API** | Node.js, TypeScript, Express |
-| **Database & Auth** | Supabase/PostgreSQL, HttpOnly cookies |
-| **Workspace** | pnpm workspaces |
+### 1. Trang Chủ (Landing Page)
+- **Định vị 2 lối đi rõ ràng:** Lựa chọn khám phá khu vực **Engineering (CODE)** hoặc **Post-Production (EDITOR)**.
+- **Hiệu ứng thị giác hiện đại:** Ambient neon lighting, thẻ bài tương tác 3D tilt theo con trỏ chuột (Framer Motion).
+- **Banner giới thiệu MDA:** Tích hợp lối tắt làm quen nhanh với trợ lý AI.
 
-## Repository Structure
+### 2. Khu Lập Trình (Code Portfolio) — `/code`
+- Trình diễn năng lực kỹ thuật Full-Stack: React 19, TypeScript, Express, PostgreSQL, Drizzle ORM.
+- Danh sách công nghệ được phân nhóm trực quan với hiệu ứng 3D hover.
+- Trưng bày các dự án mã nguồn tiêu biểu (QuickServe POS, Zenith Workspace, Study ELS, v.v.).
+
+### 3. Khu Biên Tập & Media (Editor Portfolio) — `/editor`
+- Không gian dành riêng cho đam mê AMV / Motion Graphics và nghệ thuật kể chuyện bằng hình ảnh.
+- Bảng công cụ chuyên dụng: Adobe After Effects, Premiere Pro, Photoshop cùng hệ thống plugin cao cấp (BCC, Flow, Layer Fast, Kuronai / Method render 60fps).
+- Showcase các tác phẩm video nổi bật liên kết trực tiếp với kênh TikTok sáng tạo.
+
+### 4. Trợ Lý AI Đại Diện (MDA AI Assistant)
+- **Floating Chat Widget:** Cửa sổ chat phong cách glassmorphism mượt mà, hỗ trợ render Markdown và code blocks.
+- **Server-Sent Events (SSE):** Phản hồi văn bản dạng streaming thời gian thực.
+- **Kiến trúc RAG & Grounded Answering:** Tìm kiếm dữ liệu liên quan qua vector embeddings (`pgvector`) và đối soát bằng chứng nhằm ngăn chặn triệt để hiện tượng AI bịa đặt (anti-hallucination).
+- **Live GitHub Stats:** Tự động lấy số lượng followers, repos, stars thực tế thông qua GitHub API khi người dùng hỏi.
+- **Hỗ trợ đa mô hình:** Tương thích với Google Gemini SDK (`gemini-3.1-flash-lite`) trên production hoặc mô hình Local (Qwen 2.5 qua Ollama) khi phát triển cục bộ.
+
+---
+
+## 🛠️ Công Nghệ Sử Dụng (Tech Stack)
+
+| Phân hệ | Công nghệ | Mục đích |
+|---|---|---|
+| **Frontend Web** | React 19, TypeScript, Vite | Xây dựng giao diện Single Page App tốc độ cao |
+| **Animation & Styling** | Framer Motion, Vanilla CSS (Variables) | Hiệu ứng chuyển động mượt, tối ưu hiệu năng |
+| **Backend API** | Node.js, Express 5, TypeScript | REST API, SSE Streaming cho Chatbot MDA |
+| **Database & ORM** | PostgreSQL (Supabase), Drizzle ORM | Lưu trữ dữ liệu hội thoại, feedback và tri thức |
+| **Vector Search** | pgvector (`nomic-embed-text` / Gemini) | Truy xuất ngữ nghĩa phục vụ RAG |
+| **AI Engine** | Google Gemini / Qwen 2.5 (Ollama) | Xử lý ngôn ngữ tự nhiên và trả lời hội thoại |
+| **Monorepo** | pnpm workspaces | Quản lý đa gói ứng dụng đồng nhất |
+
+---
+
+## 📁 Cấu Trúc Thư Mục (Repository Structure)
 
 ```text
 zenith-workspace/
 ├── apps/
-│   ├── api/                     # Express API & AI Controller
+│   ├── api/                     # Backend API & MDA AI Service (Express 5)
 │   │   ├── src/
-│   │   │   ├── controllers/     # AI Chat, Messages, Auth
-│   │   │   ├── services/        # Gemini AI Service
-│   │   │   └── server.ts
+│   │   │   ├── controllers/     # Chat & Feedback controllers
+│   │   │   ├── db/              # Drizzle ORM schema & migrations
+│   │   │   ├── middlewares/     # Auth, rate-limit, CORS
+│   │   │   ├── routes/          # /api/chat, /api/feedback
+│   │   │   ├── services/        # AIService, RagService, EmbeddingService, GithubService
+│   │   │   └── server.ts        # Entry point máy chủ API
 │   │   └── package.json
 │   │
-│   └── web/                     # React application
+│   └── web/                     # Frontend Application (React 19 + Vite)
 │       ├── src/
-│       │   ├── app/             # App Router & Global Providers
-│       │   ├── features/        # ai-chat, portfolio, community
-│       │   ├── components/      # Shared UI
-│       │   └── styles/          # Variables, CSS Modules
+│       │   ├── app/             # AppRouter, AppProviders
+│       │   ├── components/      # Layouts & UI chung
+│       │   ├── features/
+│       │   │   ├── ai-chat/     # Floating ChatWidget, streaming hooks, styles
+│       │   │   └── portfolio/   # Components khu Code & khu Editor
+│       │   ├── pages/           # LandingPage, CodePortfolioPage, EditorPortfolioPage
+│       │   └── styles/          # Design tokens (variables.css, animations.css)
 │       └── package.json
 │
-├── packages/                    # Future shared packages
-├── package.json
-└── pnpm-workspace.yaml
+├── ai/
+│   └── mda/                     # AI Workspace của MDA (Datasets, Prompts, LoRA configs)
+├── scripts/                     # Scripts nạp dữ liệu (ingestion) và kiểm tra deploy
+├── supabase/                    # Các tệp SQL migration cho database & vector
+├── package.json                 # Root monorepo scripts
+└── pnpm-workspace.yaml          # Cấu hình pnpm workspaces
 ```
 
-## Getting Started
+---
 
-### Requirements
+## 🚀 Hướng Dẫn Cài Đặt & Khởi Chạy (Getting Started)
 
-- Node.js (v20+)
-- pnpm (v11+)
-- Git
+### 1. Yêu cầu hệ thống
+- **Node.js:** `>= 20.x`
+- **pnpm:** `>= 10.x` hoặc `11.x`
+- **PostgreSQL:** Hỗ trợ extension `vector` (khuyên dùng Supabase)
 
-### 1. Clone & Install
+### 2. Cài đặt gói phụ thuộc
+Tải mã nguồn về máy và cài đặt thư viện từ thư mục gốc:
 
 ```bash
 git clone https://github.com/SangTranTamLy/zenith-workspace.git
@@ -94,50 +133,81 @@ cd zenith-workspace
 pnpm install
 ```
 
-### 2. Configure Environment
+### 3. Cấu hình biến môi trường (.env)
 
-Create `apps/api/.env` and add the following keys:
+#### A. Backend API (`apps/api/.env`)
+Tạo tệp `apps/api/.env` dựa theo mẫu:
 
 ```env
-# Database
-DATABASE_URL="postgresql://...supabase.com:5432/postgres"
+# Server
+PORT=4000
+NODE_ENV=development
+WEB_URL=http://localhost:5173
+CORS_ORIGINS=http://localhost:5173
+
+# Database (PostgreSQL + pgvector)
+DATABASE_URL="postgresql://postgres:password@localhost:5432/postgres"
 
 # AI Configuration
+# Lựa chọn 1: Dùng Gemini API (Production / Cloud)
+GEMINI_API_KEY="AIzaSy..."
+
+# Lựa chọn 2: Dùng Local LLM qua Ollama (Cục bộ)
+# AI_MODEL_URL="http://127.0.0.1:11434"
 AI_MODEL_NAME="gemini-3.1-flash-lite"
 EMBEDDING_MODEL="gemini-embedding-001"
-OPENAI_API_KEY="AIzaSy..." # Your Gemini API Key here
-WEB_SEARCH_API_KEY="tvly-..." # Your Tavily API Key here
-
-# Server
-NODE_ENV=development
-PORT=4000
-WEB_URL=http://localhost:5173
 ```
 
-### 3. Start Development Servers
+#### B. Frontend Web (`apps/web/.env`)
+Tạo tệp `apps/web/.env`:
 
-Run commands from the monorepo root:
+```env
+VITE_API_BASE_URL=http://localhost:4000
+VITE_REALTIME_ENABLED=true
+```
+
+### 4. Khởi chạy môi trường phát triển (Dev)
+
+Khởi chạy đồng thời cả hai ứng dụng từ thư mục gốc:
 
 ```bash
-# Start the API Backend (Port 4000)
+# Chạy Backend API (Port 4000)
 pnpm --filter @zenith/api dev
 
-# Start the Web Frontend (Port 5173)
+# Chạy Frontend Web (Port 5173)
 pnpm --filter @zenith/web dev
 ```
 
-## Styling Rules
-Frontend styles strictly use **Vanilla CSS** (No Tailwind) to ensure maximum flexibility and mastery over the CSS cascade:
-- Variables and design tokens are in `variables.css`.
-- Animations in `animations.css`.
-- Feature-specific CSS is isolated in feature modules (e.g., `ChatWidget.css`).
-
-## Author
-
-**T.Sang — SangTranTamLy**
-- GitHub: [github.com/SangTranTamLy](https://github.com/SangTranTamLy)
-- Email: [sangchaubr089@gmail.com](mailto:sangchaubr089@gmail.com)
+Truy cập trình duyệt tại: `http://localhost:5173`
 
 ---
 
-*Built with React, TypeScript, Express, and intelligent AI integrations.*
+## ⚡ Các Lệnh Thường Dùng (Useful Scripts)
+
+| Lệnh | Ý nghĩa |
+|---|---|
+| `pnpm --filter @zenith/web dev` | Chạy dev server của ứng dụng Web |
+| `pnpm --filter @zenith/api dev` | Chạy dev server của ứng dụng API |
+| `pnpm --filter @zenith/api db:migrate` | Chạy migration cấu trúc cơ sở dữ liệu |
+| `pnpm --filter @zenith/api ingest` | Nạp dữ liệu tri thức portfolio vào vector store |
+| `pnpm web:build` | Build bundle cho ứng dụng Frontend |
+| `pnpm api:build` | Build TypeScript cho ứng dụng Backend |
+| `pnpm api:typecheck` | Kiểm tra lỗi kiểu dữ liệu ở API |
+
+---
+
+## 👤 Tác Giả & Liên Hệ (Author)
+
+**T.Sang (SangTranTamLy)**  
+*Full-Stack Developer & Video Editor*
+
+- **GitHub:** [@SangTranTamLy](https://github.com/SangTranTamLy)
+- **Email:** [sangchaubr089@gmail.com](mailto:sangchaubr089@gmail.com)
+- **TikTok (Editing):** [@zenithedi_](https://www.tiktok.com/@zenithedi_)
+- **TikTok (MVS):** [@fairytail100yq_mvs](https://www.tiktok.com/@fairytail100yq_mvs)
+
+---
+
+<div align="center">
+  <sub>Xây dựng với niềm đam mê dành cho Code & Cinema. Powered by MDA AI.</sub>
+</div>

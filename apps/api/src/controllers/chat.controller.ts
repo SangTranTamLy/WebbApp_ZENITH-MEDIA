@@ -1,6 +1,8 @@
 import type { Request, Response } from "express";
 import { AIService } from "../services/ai.service.js";
-// import { db } from "../db"; // We will use this to save messages later
+import { db } from "../db/index.js";
+import { conversations, conversationMessages } from "../db/schema/index.js";
+import crypto from "crypto";
 
 export class ChatController {
   static async handleChatStream(req: Request, res: Response) {
@@ -42,18 +44,56 @@ export class ChatController {
       res.setHeader("X-Content-Type-Options", "nosniff");
 
       // 2. Fetch the stream from AI Service
-      const stream = AIService.generateChatStream(publicMessages, "PUBLIC");
+      const role = (req as any).user?.role === "OWNER" ? "PRIVATE" : "PUBLIC";
+      const sessionId = (req as any).user?.id || req.headers["x-session-id"] || "anonymous";
+
+      const conversationId = req.body.conversationId ?? crypto.randomUUID();
+      const messageId = crypto.randomUUID();
+
+      // Ensure conversation exists, then save the latest user message
+      db.insert(conversations)
+        .values({ id: conversationId, sessionId, title: "Chat", visibility: role })
+        .onConflictDoNothing()
+        .then(() => {
+          const userMsg = publicMessages[publicMessages.length - 1];
+          if (userMsg) {
+            return db.insert(conversationMessages).values({
+              conversationId,
+              role: "user",
+              content: userMsg.content,
+            });
+          }
+        })
+        .catch((e) => console.error("[Chat DB] Error saving user message:", e));
+
+      // Send initial metadata chunk with messageId to frontend for feedback
+      res.write(`data: ${JSON.stringify({ metadata: { messageId, conversationId } })}\n\n`);
+
+      const stream = AIService.generateChatStream(publicMessages, role);
+      let fullAssistantContent = "";
 
       // 3. Process the stream and send chunks to client
       for await (const chunk of stream) {
-        const content = chunk.text();
+        if (chunk.sources?.length) {
+          res.write(`data: ${JSON.stringify({ sources: chunk.sources })}\n\n`);
+        }
+        const content = chunk.text?.();
         if (content) {
-          // Format for SSE
+          fullAssistantContent += content;
           res.write(`data: ${JSON.stringify({ text: content })}\n\n`);
         }
       }
 
-      // 4. Conclude the stream
+      // 4. Conclude the stream and save assistant message
+      db.insert(conversationMessages)
+        .values({
+          id: messageId,
+          conversationId,
+          role: "assistant",
+          content: fullAssistantContent,
+        })
+        .catch((e) => console.error("[Chat DB] Error saving assistant message:", e));
+
       res.write("data: [DONE]\n\n");
       res.end();
 

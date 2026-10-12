@@ -29,7 +29,7 @@ export const knowledgeChunks = pgTable("knowledge_chunks", {
   documentId: uuid("document_id").references(() => knowledgeDocuments.id, { onDelete: "cascade" }).notNull(),
   chunkIndex: integer("chunk_index"),
   content: text("content").notNull(),
-  embedding: vector("embedding"), // OpenAPI text-embedding-3-small dimension
+  embedding: vector("embedding"),
   tokenCount: integer("token_count"),
   metadata: jsonb("metadata"),
   createdAt: timestamp("created_at").defaultNow().notNull(),

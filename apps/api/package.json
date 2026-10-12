@@ -9,9 +9,12 @@
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/server.js",
     "db:generate": "drizzle-kit generate",
-    "db:push": "drizzle-kit push",
+    "db:migrate": "tsx src/db/migrate.ts",
     "db:studio": "drizzle-kit studio",
-    "ingest": "tsx src/scripts/ingest-portfolio.ts"
+    "ingest": "tsx src/scripts/ingest-portfolio.ts",
+    "ingest:local": "tsx src/scripts/ingest-local-docs.ts",
+    "regression": "tsx src/scripts/run-regression.ts",
+    "test:ingestion": "tsx src/scripts/test-ingestion.ts"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +27,8 @@
     "drizzle-orm": "^0.45.3",
     "express": "^5.2.1",
     "express-rate-limit": "^8.7.0",
+    "jsonwebtoken": "^9.0.3",
+    "mammoth": "^1.13.0",
     "pgvector": "^0.3.0",
     "postgres": "^3.4.9",
     "zod": "^4.6.5"
@@ -32,6 +37,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/express-rate-limit": "^6.0.2",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^26.6.2",
     "drizzle-kit": "^0.31.11",
     "tsx": "^4.23.15",

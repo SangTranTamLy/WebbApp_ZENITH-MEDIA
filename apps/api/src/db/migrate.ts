@@ -17,6 +17,10 @@ const db = drizzle(sql);
 async function main() {
   console.log("Running migrations...");
   try {
+    const extensionCheck = await sql`select extname from pg_extension where extname = 'vector'`;
+    if (extensionCheck.length === 0) {
+      throw new Error("pgvector extension is unavailable. Enable pgvector on PostgreSQL before running migrations.");
+    }
     await migrate(db, { migrationsFolder: "./src/db/migrations" });
     console.log("Migrations successfully applied!");
     process.exit(0);

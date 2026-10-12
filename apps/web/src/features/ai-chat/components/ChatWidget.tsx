@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, User, Sparkles } from "lucide-react";
-import { useChat } from "../hooks/useChat";
+import { useChat, type ChatSource } from "../hooks/useChat";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -23,6 +23,18 @@ const AVATARS = {
   success: botSuccess,
   error: botError,
 };
+
+function renderSource(source: ChatSource) {
+  const sourceUri = source.sourceUri?.trim();
+  if (sourceUri && /^https?:\/\//i.test(sourceUri)) {
+    return (
+      <a href={sourceUri} target="_blank" rel="noopener noreferrer">
+        {source.title}
+      </a>
+    );
+  }
+  return <span>{source.title}</span>;
+}
 
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -58,7 +70,7 @@ export function ChatWidget() {
                   <h3>
                     MDA Assistant <Sparkles className="sparkle-icon" />
                   </h3>
-                  <p>Powered by Zenith AI</p>
+                  <p>Powered by Sang AI</p>
                 </div>
               </div>
               <button
@@ -129,6 +141,16 @@ export function ChatWidget() {
                       ) : (
                         <p>{msg.content}</p>
                       )}
+                      {msg.role === "assistant" && msg.sources?.length ? (
+                        <div className="message-sources">
+                          <span>Nguồn:</span>
+                          {msg.sources.map((source) => (
+                            <span key={`${source.documentId}-${source.chunkIndex ?? "document"}`}>
+                              {renderSource(source)}
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 </motion.div>

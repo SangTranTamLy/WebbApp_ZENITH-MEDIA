@@ -1,22 +1,27 @@
-import * as dotenv from "dotenv";
-dotenv.config();
+import { AIService } from './src/services/ai.service.js';
 
 async function testChat() {
-  console.log("Testing AIService directly...");
-  const { AIService } = await import("./src/services/ai.service");
-  
+  console.log("Q: Hãy giới thiệu ngắn gọn về Sang?");
+  const messages = [{ role: 'user' as const, content: 'Hãy giới thiệu ngắn gọn về Sang?' }];
+
+  console.log(`Đang sử dụng Model: ${process.env.GEMINI_API_KEY ? "Gemini 1.5 Flash (Production)" : "Ollama (Local Fallback)"}`);
+
   try {
-    const stream = await AIService.generateChatStream([{ role: "user", content: "Hi" }], "PUBLIC");
+    const stream = AIService.generateChatStream(messages, 'PUBLIC');
+    let response = "";
+
+    process.stdout.write("A: ");
     for await (const chunk of stream) {
-      process.stdout.write(chunk.text() || "");
+      if (chunk.text) {
+        const t = chunk.text();
+        response += t;
+        process.stdout.write(t);
+      }
     }
-    console.log("\n--- DONE ---");
-  } catch (e: any) {
-    console.error("OpenAI Error:", JSON.stringify(e, null, 2));
-    if (e.error) {
-      console.error("Inner Error:", JSON.stringify(e.error, null, 2));
-    }
+    console.log("\n");
+  } catch(e) {
+    console.error("Lỗi:", e);
   }
 }
 
-testChat();
+testChat().catch(console.error);

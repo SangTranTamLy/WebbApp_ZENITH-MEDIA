@@ -6,6 +6,16 @@ export interface Message {
   id: string;
   role: MessageRole;
   content: string;
+  sources?: ChatSource[];
+}
+
+export interface ChatSource {
+  documentId: string;
+  title: string;
+  sourceType: string;
+  sourceUri: string | null;
+  metadata: unknown;
+  chunkIndex: number | null;
 }
 
 export type BotState = "idle" | "greeting" | "thinking" | "typing" | "success" | "error";
@@ -83,8 +93,9 @@ export function useChat() {
       const reader = response.body.getReader();
       const decoder = new TextDecoder("utf-8");
       let sseBuffer = "";
+      let receivedDone = false;
 
-      while (true) {
+      while (!receivedDone) {
         const { value, done } = await reader.read();
         if (done) break;
         
@@ -98,28 +109,52 @@ export function useChat() {
 
           const dataStr = dataLine.replace("data: ", "").trim();
           if (dataStr === "[DONE]") {
+            receivedDone = true;
             setBotState("success");
             setTimeout(() => setBotState("idle"), 3000);
-            continue;
+            break;
           }
           if (!dataStr) continue;
 
+          let data: { error?: unknown; sources?: unknown; text?: unknown };
           try {
-            const data = JSON.parse(dataStr);
-            if (data.text) {
-              setBotState("typing");
-              setMessages((prev) =>
-                prev.map((msg) =>
-                  msg.id === botMessageId
-                    ? { ...msg, content: msg.content + data.text }
-                    : msg
-                )
-              );
-            }
+            data = JSON.parse(dataStr) as { error?: unknown; sources?: unknown; text?: unknown };
           } catch {
             console.warn("Failed to parse SSE data chunk", dataStr);
+            continue;
+          }
+
+          if (data.error) {
+            throw new Error(String(data.error));
+          }
+          if (Array.isArray(data.sources)) {
+            setMessages((prev) =>
+              prev.map((msg) =>
+                msg.id === botMessageId
+                  ? { ...msg, sources: data.sources as ChatSource[] }
+                  : msg,
+              ),
+            );
+          }
+          if (typeof data.text === "string" && data.text) {
+            setBotState("typing");
+            setMessages((prev) =>
+              prev.map((msg) =>
+                msg.id === botMessageId
+                  ? { ...msg, content: msg.content + data.text }
+                  : msg
+              )
+            );
           }
         }
+
+        if (receivedDone) {
+          await reader.cancel();
+        }
+      }
+
+      if (!receivedDone) {
+        throw new Error("Chat stream ended before [DONE].");
       }
     } catch (error) {
       console.error("Chat error:", error);

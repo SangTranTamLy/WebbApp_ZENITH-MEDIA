@@ -1,116 +1,69 @@
-import { db } from "../db/index.js";
-import { knowledgeDocuments, knowledgeChunks } from "../db/schema/knowledge.js";
+import {
+  assertSafeDocument,
+  ingestKnowledgeDocument,
+} from "../services/knowledge-ingestion.service.js";
 import { PORTFOLIO_KNOWLEDGE } from "../services/portfolio-knowledge.js";
-import { EmbeddingService } from "../services/embedding.service.js";
-import { eq } from "drizzle-orm";
-import crypto from "crypto";
 
 async function fetchReadme(repoUrl: string): Promise<string | null> {
-  const match = repoUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+  const match = repoUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
   if (!match) return null;
 
   const owner = match[1];
   const repo = match[2];
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8_000);
 
-  const branches = ["main", "master"];
-  for (const branch of branches) {
-    const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/README.md`;
-    try {
-      const response = await fetch(rawUrl);
-      if (response.ok) {
-        return await response.text();
-      }
-    } catch (e) {
-      // ignore and try next branch
+  try {
+    for (const branch of ["main", "master"]) {
+      const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/README.md`;
+      const response = await fetch(rawUrl, { signal: controller.signal });
+      if (response.ok) return await response.text();
     }
+    return null;
+  } finally {
+    clearTimeout(timeout);
   }
-  return null;
 }
 
-function md5(content: string) {
-  return crypto.createHash("md5").update(content).digest("hex");
-}
-
-async function ingest() {
-  console.log("Starting RAG ingestion for Portfolio Projects...");
+async function ingest(): Promise<void> {
+  console.log("Starting explicit RAG ingestion for approved portfolio GitHub READMEs...");
+  let blocked = 0;
 
   for (const project of PORTFOLIO_KNOWLEDGE.projects) {
-    console.log(`\nProcessing: ${project.title}`);
-    
     if (!project.url.includes("github.com")) {
-      console.log(`Skipping ${project.title}: Not a GitHub URL`);
+      console.log(`SKIPPED: ${project.title} has no approved GitHub URL.`);
       continue;
     }
 
     const readmeContent = await fetchReadme(project.url);
     if (!readmeContent) {
-      console.log(`Failed to fetch README for ${project.title}`);
+      blocked++;
+      console.error(`BLOCKED: README unavailable for ${project.title}.`);
       continue;
     }
 
-    const checksum = md5(readmeContent);
-
-    // Check if we already have this exact document
-    const existing = await db.query.knowledgeDocuments.findFirst({
-      where: eq(knowledgeDocuments.sourceUri, project.url),
-    });
-
-    if (existing && existing.checksum === checksum) {
-      console.log(`No changes detected for ${project.title}, skipping.`);
-      continue;
-    }
-
-    // Delete existing old version if any
-    if (existing) {
-      console.log(`Updating ${project.title} (checksum changed). Removing old chunks...`);
-      await db.delete(knowledgeDocuments).where(eq(knowledgeDocuments.id, existing.id));
-    }
-
-    // 1. Insert Document
-    const [doc] = await db.insert(knowledgeDocuments).values({
+    assertSafeDocument(project.url, readmeContent);
+    const result = await ingestKnowledgeDocument({
       title: `${project.title} README`,
-      sourceType: "GITHUB_README",
+      sourceType: "URL",
       sourceUri: project.url,
-      visibility: "PUBLIC",
       mimeType: "text/markdown",
-      checksum: checksum,
-      status: "COMPLETED",
-    }).returning();
-
-    if (!doc) {
-      console.error(`Failed to insert document for ${project.title}`);
-      continue;
-    }
-
-    // 2. Chunk and Embed
-    console.log(`Chunking README...`);
-    const chunks = EmbeddingService.chunkText(readmeContent);
-    console.log(`Generated ${chunks.length} chunks. Fetching embeddings...`);
-
-    for (let i = 0; i < chunks.length; i++) {
-      const chunkText = chunks[i];
-      if (!chunkText) continue;
-
-      try {
-        const embedding = await EmbeddingService.generateEmbedding(chunkText);
-
-        await db.insert(knowledgeChunks).values({
-          documentId: doc.id,
-          chunkIndex: i,
-          content: chunkText,
-          embedding: embedding,
-          tokenCount: chunkText.length / 4, // Rough approximation
-        });
-      } catch (err: any) {
-        console.error(`Failed to embed chunk ${i} for ${project.title}:`, err.message);
-      }
-    }
-    
-    console.log(`Successfully ingested ${project.title}!`);
+      visibility: "PUBLIC",
+      text: readmeContent,
+      metadata: {
+        parser: "github-raw-readme",
+        approval: "portfolio-knowledge-source-of-truth",
+        sourceUrl: project.url,
+      },
+    });
+    console.log(`${result.status}: ${project.title} (${result.chunks} chunks)`);
   }
 
-  console.log("\nIngestion pipeline complete.");
-  process.exit(0);
+  console.log("Portfolio ingestion complete. No local reports/datasets were scanned.");
+  if (blocked > 0) process.exitCode = 2;
 }
 
-ingest().catch(console.error);
+ingest().catch((error) => {
+  console.error(`Portfolio ingestion failed: ${error instanceof Error ? error.message : "unknown error"}`);
+  process.exitCode = 1;
+});

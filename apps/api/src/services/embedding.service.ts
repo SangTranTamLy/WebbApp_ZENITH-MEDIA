@@ -1,5 +1,8 @@
 import dotenv from "dotenv";
+import { getModelRuntimeConfig } from "./model-config.js";
 dotenv.config();
+
+const EMBEDDING_DIMENSION = 768;
 
 /**
  * Service to generate vector embeddings for RAG.
@@ -10,11 +13,22 @@ export class EmbeddingService {
    * Based on the project plan, we are using `nomic-embed-text` which has 768 dimensions.
    */
   static async generateEmbedding(text: string): Promise<number[]> {
-    const baseUrl = process.env.AI_MODEL_URL?.replace(/\/v1\/?$/, '') || "http://127.0.0.1:11434";
+    const runtimeConfig = getModelRuntimeConfig();
+    const baseUrl = runtimeConfig.modelUrl?.replace(/\/v1\/?$/, "") || "http://127.0.0.1:11434";
     const url = `${baseUrl}/api/embeddings`;
-    const model = process.env.EMBEDDING_MODEL || "nomic-embed-text";
+    const model = runtimeConfig.embeddingModel;
+
+    const geminiApiKey = process.env.GEMINI_API_KEY;
 
     try {
+      if (geminiApiKey) {
+        const { GoogleGenerativeAI } = await import("@google/generative-ai");
+        const genAI = new GoogleGenerativeAI(geminiApiKey);
+        const genModel = genAI.getGenerativeModel({ model: "text-embedding-004" });
+        const result = await genModel.embedContent(text);
+        return EmbeddingService.validateEmbedding(result.embedding.values);
+      }
+
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -31,11 +45,25 @@ export class EmbeddingService {
       }
 
       const data = await response.json();
-      return data.embedding;
+      return EmbeddingService.validateEmbedding(data.embedding);
     } catch (error) {
       console.error("[EmbeddingService] Error generating embedding:", error);
       throw error;
     }
+  }
+
+  private static validateEmbedding(value: unknown): number[] {
+    if (
+      !Array.isArray(value) ||
+      value.length !== EMBEDDING_DIMENSION ||
+      value.some((item) => typeof item !== "number" || !Number.isFinite(item))
+    ) {
+      throw new Error(
+        `Embedding dimension mismatch: expected ${EMBEDDING_DIMENSION} numeric values.`,
+      );
+    }
+
+    return value;
   }
 
   /**

@@ -1,0 +1,2 @@
+ALTER TABLE "shop"."entitlements" ADD COLUMN "right_key" text GENERATED ALWAYS AS (payload->'line'->'rights'->>0) STORED NOT NULL;--> statement-breakpoint
+CREATE UNIQUE INDEX "owned_identity" ON "shop"."entitlements" USING btree ("user_id","right_key");

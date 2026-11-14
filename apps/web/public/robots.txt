@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /account
+Disallow: /orders
+Disallow: /checkout
+Disallow: /library
+Disallow: /downloads
+Disallow: /support
+Disallow: /notifications

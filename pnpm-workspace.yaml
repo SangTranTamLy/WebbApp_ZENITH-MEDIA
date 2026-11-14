@@ -1,6 +1,7 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - apps/*
+  - packages/*
 allowBuilds:
   esbuild: true
-  puppeteer: set this to true or false
+  workerd: true
+  ffmpeg-static: true

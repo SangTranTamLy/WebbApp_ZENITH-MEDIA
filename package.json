@@ -1,18 +1,24 @@
 {
-  "name": "zenith-workspace",
-  "version": "1.0.0",
+  "name": "zenith-store",
+  "version": "2.0.0",
   "private": true,
+  "type": "module",
   "packageManager": "pnpm@11.18.0",
-  "description": "Zenith Media Workspace monorepo",
   "scripts": {
-    "web:build": "pnpm --filter @zenith/web build",
-    "web:build:deploy": "pnpm --filter @zenith/web build:deploy",
-    "api:typecheck": "pnpm --filter @zenith/api typecheck",
-    "api:build": "pnpm --filter @zenith/api build",
-    "api:db:migrate": "pnpm --filter @zenith/api db:migrate",
-    "api:test:ingestion": "pnpm --filter @zenith/api test:ingestion",
-    "api:start": "pnpm --filter @zenith/api start",
-    "web:verify-deployment": "node scripts/verify-web-deployment.mjs"
+    "dev": "pnpm --parallel --filter @zenith/web --filter @zenith/api dev",
+    "demo": "pnpm --parallel --filter @zenith/web --filter @zenith/api demo",
+    "build": "pnpm --filter @zenith/api build && pnpm --filter @zenith/web build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm --filter @zenith/api test && pnpm --filter @zenith/worker test",
+    "test:e2e": "playwright test",
+    "lint": "pnpm --filter @zenith/web lint",
+    "db:migrate": "pnpm --filter @zenith/api db:migrate",
+    "db:inventory": "pnpm --filter @zenith/api db:inventory",
+    "worker": "pnpm --filter @zenith/worker start",
+    "check": "pnpm typecheck && pnpm test && pnpm build && pnpm lint"
   },
-  "type": "module"
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "prettier": "^3.9.10"
+  }
 }

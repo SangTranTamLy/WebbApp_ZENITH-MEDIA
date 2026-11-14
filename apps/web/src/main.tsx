@@ -1,16 +1,17 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./app/App";
-import "./styles/globals.css";
-
-const rootElement = document.getElementById("root");
-
-if (!rootElement) {
-  throw new Error("Không tìm thấy phần tử root");
-}
-
-createRoot(rootElement).render(
+import { BrowserRouter } from "react-router-dom";
+import "@fontsource-variable/manrope";
+import "./styles.css";
+import "./storefront.css";
+import { Provider } from "./lib/Provider";
+import { App } from "./App";
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      <Provider>
+        <App />
+      </Provider>
+    </BrowserRouter>
   </StrictMode>,
 );
